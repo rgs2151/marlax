@@ -1,7 +1,5 @@
-import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js";
-
-
-const container = document.getElementById("world");
+const canvas = document.getElementById("world-canvas");
+const ctx = canvas.getContext("2d");
 const response = await fetch("./data/coop_grid_q_learning.json");
 const data = await response.json();
 
@@ -12,31 +10,14 @@ const size = env.size;
 const moves = env.moves;
 const targets = env.targets;
 const center = env.center;
-const cellScale = 1.35;
-const half = (size - 1) / 2;
-
-const scene = new THREE.Scene();
-scene.background = new THREE.Color(0xf4f1ea);
-
-const camera = new THREE.OrthographicCamera(-6, 6, 6, -6, 0.1, 100);
-camera.position.set(5.6, 8.2, 7.2);
-camera.lookAt(0, 0, 0);
-
-const renderer = new THREE.WebGLRenderer({ antialias: true });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-container.appendChild(renderer.domElement);
-
-const raycaster = new THREE.Raycaster();
-const pointerNdc = new THREE.Vector2();
-const groundPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
-const groundHit = new THREE.Vector3();
-
 const random = mulberry32(Math.floor(performance.timeOrigin));
+
 const agents = [
-  makeAgent(0, 0x8f2434),
-  makeAgent(1, 0x233f83),
+  makeAgent(0, "#f2f2f2"),
+  makeAgent(1, "#a9a9a9"),
 ];
 
+let board = { x: 0, y: 0, size: 1, cell: 1 };
 let active = false;
 let targetId = 0;
 let stepCount = 0;
@@ -45,11 +26,8 @@ let decisionClock = 0;
 let draggedAgent = null;
 let pointerGrid = null;
 let pointerDown = false;
+let lastTime = performance.now();
 
-makeLights();
-makeGround();
-const centerMarker = makeMarker(0xd8a328, "box");
-const targetMarkers = [makeMarker(0x2f7d4f, "circle"), makeMarker(0x2f7d4f, "circle")];
 resetTrial();
 resize();
 requestAnimationFrame(animate);
@@ -65,118 +43,19 @@ function mulberry32(seed) {
   };
 }
 
-function gridToWorld(point) {
-  return new THREE.Vector3((point[0] - half) * cellScale, 0, (point[1] - half) * cellScale);
-}
-
-function worldToGrid(point) {
-  return [
-    clamp(point.x / cellScale + half, 0, size - 1),
-    clamp(point.z / cellScale + half, 0, size - 1),
-  ];
-}
-
 function clamp(value, lo, hi) {
   return Math.max(lo, Math.min(hi, value));
 }
 
-function makeLights() {
-  scene.add(new THREE.HemisphereLight(0xffffff, 0xc7bba8, 2.4));
-  const light = new THREE.DirectionalLight(0xffffff, 2.6);
-  light.position.set(5, 8, 4);
-  scene.add(light);
-}
-
-function makeGround() {
-  const ground = new THREE.Mesh(
-    new THREE.PlaneGeometry(size * cellScale, size * cellScale),
-    new THREE.MeshStandardMaterial({ color: 0xfaf8f2, roughness: 0.86 })
-  );
-  ground.rotation.x = -Math.PI / 2;
-  scene.add(ground);
-
-  const points = [];
-  const min = -half * cellScale;
-  const max = half * cellScale;
-  for (let i = 0; i < size; i += 1) {
-    const p = (i - half) * cellScale;
-    points.push(new THREE.Vector3(min, 0.012, p), new THREE.Vector3(max, 0.012, p));
-    points.push(new THREE.Vector3(p, 0.012, min), new THREE.Vector3(p, 0.012, max));
-  }
-  const grid = new THREE.LineSegments(
-    new THREE.BufferGeometry().setFromPoints(points),
-    new THREE.LineBasicMaterial({ color: 0xd7d0c2 })
-  );
-  scene.add(grid);
-}
-
-function makeMarker(color, shape) {
-  const geometry = shape === "box"
-    ? new THREE.BoxGeometry(cellScale * 0.58, 0.08, cellScale * 0.58)
-    : new THREE.CylinderGeometry(cellScale * 0.28, cellScale * 0.28, 0.08, 32);
-  const marker = new THREE.Mesh(
-    geometry,
-    new THREE.MeshStandardMaterial({ color, roughness: 0.65, metalness: 0.02 })
-  );
-  scene.add(marker);
-  return marker;
-}
-
-function makeAgent(id, color) {
-  const group = new THREE.Group();
-  const material = new THREE.MeshStandardMaterial({ color, roughness: 0.72 });
-  const dark = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.5 });
-
-  const body = new THREE.Mesh(new THREE.SphereGeometry(0.35, 32, 18), material);
-  body.scale.set(1.25, 0.58, 0.78);
-  body.position.set(0, 0.3, 0);
-  group.add(body);
-
-  const head = new THREE.Mesh(new THREE.SphereGeometry(0.22, 24, 14), material);
-  head.position.set(0.43, 0.32, 0);
-  group.add(head);
-
-  const earA = new THREE.Mesh(new THREE.SphereGeometry(0.095, 16, 10), material);
-  earA.position.set(0.46, 0.48, 0.16);
-  group.add(earA);
-
-  const earB = earA.clone();
-  earB.position.z = -0.16;
-  group.add(earB);
-
-  const eyeA = new THREE.Mesh(new THREE.SphereGeometry(0.025, 12, 8), dark);
-  eyeA.position.set(0.62, 0.37, 0.075);
-  group.add(eyeA);
-
-  const eyeB = eyeA.clone();
-  eyeB.position.z = -0.075;
-  group.add(eyeB);
-
-  const nose = new THREE.Mesh(new THREE.SphereGeometry(0.035, 12, 8), dark);
-  nose.position.set(0.66, 0.31, 0);
-  group.add(nose);
-
-  const tailPoints = [
-    new THREE.Vector3(-0.42, 0.26, 0),
-    new THREE.Vector3(-0.74, 0.22, 0.03),
-    new THREE.Vector3(-0.92, 0.18, 0),
-  ];
-  const tail = new THREE.Line(
-    new THREE.BufferGeometry().setFromPoints(tailPoints),
-    new THREE.LineBasicMaterial({ color, linewidth: 2 })
-  );
-  group.add(tail);
-
-  scene.add(group);
+function makeAgent(id, stroke) {
   return {
     id,
-    group,
+    stroke,
     position: [0, 0],
     velocity: [0, 0],
     cell: [0, 0],
     speed: 3.1 + random() * 0.35,
     temperature: 0.02 + random() * 0.025,
-    decisionPhase: random() * 0.08,
   };
 }
 
@@ -201,15 +80,12 @@ function resetTrial() {
   collectedFrames = 0;
   decisionClock = 0;
   targetId = Math.floor(random() * targets.length);
-
   agents.forEach((agent) => {
     const start = randomEdgeCell();
     agent.position = [start[0], start[1]];
     agent.velocity = [0, 0];
     agent.cell = start;
-    syncAgentMesh(agent);
   });
-  syncMarkers();
 }
 
 function stateId() {
@@ -287,7 +163,6 @@ function updatePhysics(dt) {
       Math.round(clamp(agent.position[0], 0, size - 1)),
       Math.round(clamp(agent.position[1], 0, size - 1)),
     ];
-    syncAgentMesh(agent);
   });
 }
 
@@ -310,38 +185,23 @@ function updateEnvState() {
   if (collectedFrames > 24 || stepCount > env.max_steps * 16) {
     resetTrial();
   }
-  syncMarkers();
 }
 
-function syncMarkers() {
-  centerMarker.visible = !active;
-  centerMarker.position.copy(gridToWorld(center));
-  centerMarker.position.y = 0.055;
-
-  const targetCells = targets[targetId];
-  targetMarkers.forEach((marker, index) => {
-    marker.visible = active;
-    marker.position.copy(gridToWorld(targetCells[index]));
-    marker.position.y = 0.055;
-  });
-}
-
-function syncAgentMesh(agent) {
-  const world = gridToWorld(agent.position);
-  agent.group.position.set(world.x, 0, world.z);
-  const angle = Math.atan2(agent.velocity[1], agent.velocity[0]);
-  if (Math.hypot(agent.velocity[0], agent.velocity[1]) > 0.02) {
-    agent.group.rotation.y = -angle;
-  }
+function gridToCanvas(point) {
+  return [
+    board.x + (point[0] + 0.5) * board.cell,
+    board.y + (point[1] + 0.5) * board.cell,
+  ];
 }
 
 function pointerToGrid(event) {
-  const rect = renderer.domElement.getBoundingClientRect();
-  pointerNdc.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-  pointerNdc.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-  raycaster.setFromCamera(pointerNdc, camera);
-  raycaster.ray.intersectPlane(groundPlane, groundHit);
-  return worldToGrid(groundHit);
+  const rect = canvas.getBoundingClientRect();
+  const x = (event.clientX - rect.left) * (canvas.width / rect.width);
+  const y = (event.clientY - rect.top) * (canvas.height / rect.height);
+  return [
+    clamp((x - board.x) / board.cell - 0.5, 0, size - 1),
+    clamp((y - board.y) / board.cell - 0.5, 0, size - 1),
+  ];
 }
 
 function nearestAgent(point) {
@@ -353,13 +213,119 @@ function nearestAgent(point) {
     .sort((a, b) => a.distance - b.distance)[0];
 }
 
+function draw() {
+  ctx.fillStyle = "#000";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  drawGrid();
+  drawMarkers();
+  agents.forEach(drawMouse);
+}
+
+function drawGrid() {
+  ctx.save();
+  ctx.lineCap = "round";
+  ctx.strokeStyle = "#dcdcdc";
+  ctx.lineWidth = Math.max(2, board.size * 0.0032);
+  ctx.strokeRect(board.x, board.y, board.size, board.size);
+
+  ctx.strokeStyle = "rgba(220, 220, 220, 0.28)";
+  ctx.lineWidth = Math.max(1, board.size * 0.0015);
+  for (let index = 1; index < size; index += 1) {
+    const p = board.x + index * board.cell;
+    ctx.beginPath();
+    ctx.moveTo(p, board.y);
+    ctx.lineTo(p, board.y + board.size);
+    ctx.stroke();
+    const q = board.y + index * board.cell;
+    ctx.beginPath();
+    ctx.moveTo(board.x, q);
+    ctx.lineTo(board.x + board.size, q);
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function drawMarkers() {
+  ctx.save();
+  ctx.lineWidth = Math.max(2, board.size * 0.003);
+  ctx.strokeStyle = active ? "rgba(255, 255, 255, 0.38)" : "rgba(255, 255, 255, 0.72)";
+  drawSquare(center, 0.24);
+
+  if (active) {
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.72)";
+    targets[targetId].forEach((target) => {
+      drawCircle(target, 0.27);
+    });
+  }
+  ctx.restore();
+}
+
+function drawSquare(point, radius) {
+  const [x, y] = gridToCanvas(point);
+  const r = radius * board.cell;
+  ctx.strokeRect(x - r, y - r, r * 2, r * 2);
+}
+
+function drawCircle(point, radius) {
+  const [x, y] = gridToCanvas(point);
+  ctx.beginPath();
+  ctx.arc(x, y, radius * board.cell, 0, Math.PI * 2);
+  ctx.stroke();
+}
+
+function drawMouse(agent) {
+  const [x, y] = gridToCanvas(agent.position);
+  const speed = Math.hypot(agent.velocity[0], agent.velocity[1]);
+  const angle = speed > 0.02 ? Math.atan2(agent.velocity[1], agent.velocity[0]) : 0;
+  const scale = board.cell * 0.32;
+
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(angle);
+  ctx.strokeStyle = agent.stroke;
+  ctx.lineWidth = Math.max(2, board.size * 0.0038);
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+
+  ctx.beginPath();
+  ctx.ellipse(0, 0, scale * 0.72, scale * 1.06, Math.PI / 2, 0, Math.PI * 2);
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.arc(scale * 0.72, 0, scale * 0.47, 0, Math.PI * 2);
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.arc(scale * 0.8, -scale * 0.34, scale * 0.24, 0, Math.PI * 2);
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.arc(scale * 0.8, scale * 0.34, scale * 0.24, 0, Math.PI * 2);
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.arc(scale * 1.04, -scale * 0.15, scale * 0.045, 0, Math.PI * 2);
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.arc(scale * 1.04, scale * 0.15, scale * 0.045, 0, Math.PI * 2);
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(-scale * 0.68, 0);
+  ctx.lineTo(-scale * 1.58, 0);
+  ctx.stroke();
+
+  ctx.restore();
+}
+
 function onPointerDown(event) {
   pointerDown = true;
   pointerGrid = pointerToGrid(event);
   const nearest = nearestAgent(pointerGrid);
   if (nearest.distance < 0.85) {
     draggedAgent = nearest.agent;
-    renderer.domElement.setPointerCapture(event.pointerId);
+    canvas.setPointerCapture(event.pointerId);
   }
 }
 
@@ -375,7 +341,6 @@ function onPointerMove(event) {
       Math.round(clamp(pointerGrid[0], 0, size - 1)),
       Math.round(clamp(pointerGrid[1], 0, size - 1)),
     ];
-    syncAgentMesh(draggedAgent);
   }
 }
 
@@ -386,31 +351,32 @@ function onPointerUp() {
 }
 
 function resize() {
-  const width = container.clientWidth;
-  const height = container.clientHeight;
-  const aspect = width / height;
-  const view = 5.7;
-  camera.left = -view * aspect;
-  camera.right = view * aspect;
-  camera.top = view;
-  camera.bottom = -view;
-  camera.updateProjectionMatrix();
-  renderer.setSize(width, height, false);
+  const rect = canvas.getBoundingClientRect();
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = Math.max(1, Math.floor(rect.width * dpr));
+  canvas.height = Math.max(1, Math.floor(rect.height * dpr));
+  const margin = Math.min(canvas.width, canvas.height) * 0.055;
+  const boardSize = Math.min(canvas.width, canvas.height) - margin * 2;
+  board = {
+    x: (canvas.width - boardSize) / 2,
+    y: (canvas.height - boardSize) / 2,
+    size: boardSize,
+    cell: boardSize / size,
+  };
 }
 
-let lastTime = performance.now();
 function animate(time) {
   const dt = Math.min(0.04, (time - lastTime) / 1000);
   lastTime = time;
   updatePolicy(dt);
   updatePhysics(dt);
   updateEnvState();
-  renderer.render(scene, camera);
+  draw();
   requestAnimationFrame(animate);
 }
 
-renderer.domElement.addEventListener("pointerdown", onPointerDown);
-renderer.domElement.addEventListener("pointermove", onPointerMove);
-renderer.domElement.addEventListener("pointerup", onPointerUp);
-renderer.domElement.addEventListener("pointercancel", onPointerUp);
+canvas.addEventListener("pointerdown", onPointerDown);
+canvas.addEventListener("pointermove", onPointerMove);
+canvas.addEventListener("pointerup", onPointerUp);
+canvas.addEventListener("pointercancel", onPointerUp);
 window.addEventListener("resize", resize);
