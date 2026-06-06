@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "marlax"
+version = "0.0.0"
+description = "JAX-first cooperative multi-agent reinforcement learning"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "jax>=0.10",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8",
+]
+docs = [
+    "myst-parser>=4",
+    "sphinx>=8.2",
+    "sphinx-autodoc-typehints>=3",
+    "sphinx-book-theme>=1.1",
+]
+gpu = [
+    "jax[cuda13]>=0.10",
+]
+storage = [
+    "zarr>=3.1",
+]
+all = [
+    "jax[cuda13]>=0.10",
+    "myst-parser>=4",
+    "pytest>=8",
+    "sphinx>=8.2",
+    "sphinx-autodoc-typehints>=3",
+    "sphinx-book-theme>=1.1",
+    "zarr>=3.1",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

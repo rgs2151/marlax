@@ -1,0 +1,8 @@
+- No try catch blocks or error handling unless explicitly asked.
+- Do not write backwards compatibility code or handle edge cases unless explicitly asked.
+- Keep docstrings minimal — one-liner or skip entirely if the function name is self-explanatory.
+- No redundant Args/Returns sections unless the signature is genuinely unclear.
+- Don't add type annotations, comments, or docstrings to code you didn't write.
+- Keep code simple and direct. No over-engineering or premature abstraction.
+- No extra print statements in notebook cells. Keep cells clean.
+- Use code comments for step explanations, not markdown cells.

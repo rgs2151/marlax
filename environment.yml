@@ -1,0 +1,8 @@
+name: marlax
+channels:
+  - conda-forge
+dependencies:
+  - make
+  - python=3.13
+  - pip
+  - uv
