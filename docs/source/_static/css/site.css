@@ -1,0 +1,12 @@
+.bd-main .bd-content .bd-article-container {
+  max-width: 980px;
+}
+
+.gallery-gif {
+  width: min(100%, 560px);
+  border: 1px solid var(--pst-color-border);
+  border-radius: 4px;
+  background: white;
+  display: block;
+  margin: 1.2rem 0;
+}

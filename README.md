@@ -14,7 +14,7 @@ The longer-term direction is a method zoo and environment zoo for cooperative MA
 
 ```bash
 conda env create -f environment.yml
-conda run -n marlax uv pip install --python /home/dev/miniconda3/envs/marlax/bin/python -e ".[gpu,dev,docs,storage]"
+conda run -n marlax uv pip install --python /home/dev/miniconda3/envs/marlax/bin/python -e ".[gpu,dev,docs,storage,viz]"
 ```
 
 ## Checks
@@ -22,4 +22,10 @@ conda run -n marlax uv pip install --python /home/dev/miniconda3/envs/marlax/bin
 ```bash
 conda run -n marlax python -m pytest -q
 conda run -n marlax make -C docs html
+```
+
+## Gallery Assets
+
+```bash
+conda run -n marlax python visualize/cooperative_grid.py
 ```

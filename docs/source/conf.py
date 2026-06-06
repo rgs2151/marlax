@@ -21,12 +21,16 @@ source_suffix = {
     ".md": "markdown",
 }
 
-html_theme = "sphinx_book_theme"
+html_theme = "pydata_sphinx_theme"
 html_title = "MARLAX"
+html_static_path = ["_static"]
+html_css_files = ["css/site.css"]
 html_theme_options = {
-    "repository_url": "https://github.com/rgs2151/marlax",
-    "use_repository_button": True,
-    "use_download_button": False,
+    "github_url": "https://github.com/rgs2151/marlax",
+    "navbar_align": "left",
+    "navigation_with_keys": True,
+    "show_toc_level": 2,
+    "secondary_sidebar_items": ["page-toc"],
 }
 
 autodoc_default_options = {

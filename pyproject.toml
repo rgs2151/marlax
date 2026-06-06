@@ -18,9 +18,9 @@ dev = [
 ]
 docs = [
     "myst-parser>=4",
+    "pydata-sphinx-theme>=0.16",
     "sphinx>=8.2",
     "sphinx-autodoc-typehints>=3",
-    "sphinx-book-theme>=1.1",
 ]
 gpu = [
     "jax[cuda13]>=0.10",
@@ -28,13 +28,23 @@ gpu = [
 storage = [
     "zarr>=3.1",
 ]
+viz = [
+    "matplotlib>=3.10",
+    "pillow>=11",
+    "seaborn>=0.13",
+    "tqdm>=4.67",
+]
 all = [
     "jax[cuda13]>=0.10",
+    "matplotlib>=3.10",
     "myst-parser>=4",
+    "pillow>=11",
+    "pydata-sphinx-theme>=0.16",
     "pytest>=8",
+    "seaborn>=0.13",
     "sphinx>=8.2",
     "sphinx-autodoc-typehints>=3",
-    "sphinx-book-theme>=1.1",
+    "tqdm>=4.67",
     "zarr>=3.1",
 ]
 

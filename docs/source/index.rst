@@ -20,6 +20,7 @@ The design target is a small core that can grow into:
    design/q_learning
    design/storage
    design/gpu
+   gallery
 
 .. toctree::
    :maxdepth: 1

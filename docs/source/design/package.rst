@@ -19,7 +19,7 @@ Commands
 .. code-block:: bash
 
    conda env create -f environment.yml
-   conda run -n marlax uv pip install --python /home/dev/miniconda3/envs/marlax/bin/python -e ".[gpu,dev,docs,storage]"
+   conda run -n marlax uv pip install --python /home/dev/miniconda3/envs/marlax/bin/python -e ".[gpu,dev,docs,storage,viz]"
    conda run -n marlax python -m pytest -q
    conda run -n marlax make -C docs html
 
@@ -30,4 +30,5 @@ Dependency extras
 - ``docs``: Sphinx documentation.
 - ``gpu``: NVIDIA CUDA 13 JAX wheels.
 - ``storage``: Zarr-backed experiment storage.
-- ``all``: development setup with GPU, docs, tests, and storage.
+- ``viz``: matplotlib, seaborn, pillow, and tqdm for gallery assets.
+- ``all``: development setup with GPU, docs, tests, storage, and visualization.
