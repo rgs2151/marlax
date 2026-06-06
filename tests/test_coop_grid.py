@@ -30,3 +30,36 @@ def test_collecting_active_target_finishes_episode():
     assert bool(step.collected[0])
     assert bool(step.done[0])
     assert float(step.rewards[0, 0]) == 1.0
+
+
+def test_activation_requires_all_agents_at_center():
+    env = CooperativeGridWorld(size=5, num_agents=2, num_envs=1, step_reward=0.0)
+    center = env.center
+    state = GridState(
+        positions=jnp.array([[[center[0], center[1]], [0, 0]]], dtype=jnp.int32),
+        target=jnp.array([0], dtype=jnp.int32),
+        active=jnp.array([False]),
+        steps=jnp.array([0], dtype=jnp.int32),
+    )
+
+    step = env.step(state, jnp.array([[0, 0]], dtype=jnp.int32), jax.random.key(2))
+
+    assert not bool(step.activated[0])
+    assert not bool(step.state.active[0])
+
+
+def test_activation_rewards_joint_center():
+    env = CooperativeGridWorld(size=5, num_agents=2, num_envs=1, step_reward=0.0)
+    center = env.center
+    state = GridState(
+        positions=jnp.array([[center, center]], dtype=jnp.int32),
+        target=jnp.array([0], dtype=jnp.int32),
+        active=jnp.array([False]),
+        steps=jnp.array([0], dtype=jnp.int32),
+    )
+
+    step = env.step(state, jnp.array([[0, 0]], dtype=jnp.int32), jax.random.key(3))
+
+    assert bool(step.activated[0])
+    assert bool(step.state.active[0])
+    assert bool(jnp.isclose(step.rewards[0, 0], 0.15))

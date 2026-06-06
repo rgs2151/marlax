@@ -61,6 +61,7 @@ class CooperativeGridWorld:
     num_envs: int = 1
     max_steps: int = 64
     target_reward: float = 1.0
+    activation_reward: float = 0.15
     step_reward: float = -0.01
     wrong_target_reward: float = -1.0
     split_target_reward: float = -0.5
@@ -123,7 +124,7 @@ class CooperativeGridWorld:
         state_id = self.state_id(state)
         positions = jnp.clip(state.positions + MOVES[actions], 0, self.size - 1)
 
-        center_hit = jnp.any(jnp.all(positions == self.center, axis=-1), axis=-1)
+        center_hit = jnp.all(jnp.all(positions == self.center, axis=-1), axis=-1)
         activated = jnp.logical_and(~state.active, center_hit)
         active = jnp.logical_or(state.active, activated)
 
@@ -147,6 +148,7 @@ class CooperativeGridWorld:
 
         reward = (
             self.step_reward
+            + self.activation_reward * activated.astype(jnp.float32)
             + self.target_reward * collected.astype(jnp.float32)
             + self.wrong_target_reward * wrong_target.astype(jnp.float32)
             + self.split_target_reward * split_target.astype(jnp.float32)

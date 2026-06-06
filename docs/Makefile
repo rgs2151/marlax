@@ -1,8 +1,0 @@
-SPHINXOPTS    ?=
-SPHINXBUILD   ?= sphinx-build
-SOURCEDIR     = source
-BUILDDIR      = build
-
-.PHONY: html
-html:
-	JAX_PLATFORMS=cpu XLA_PYTHON_CLIENT_PREALLOCATE=false $(SPHINXBUILD) -M html "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS)
