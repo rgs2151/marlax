@@ -5,69 +5,41 @@ MARLAX is a JAX-first framework for cooperative multi-agent reinforcement learni
 is being built around fast batched worlds, clear algorithms, and gallery-first
 inspection of agent behavior.
 
-Current direction
+.. raw:: html
+
+   <section class="splash-gallery">
+     <div class="splash-copy">
+       <p class="splash-kicker">Cooperative gridworld</p>
+       <h2>Watch the world first.</h2>
+       <p>
+         The front page is the gallery: two stochastic agents coordinate, recover from
+         perturbations, and expose whether the world feels learnable.
+       </p>
+     </div>
+     <div class="interactive-grid-card">
+       <canvas id="cooperative-grid-demo" width="720" height="720" aria-label="Interactive cooperative gridworld"></canvas>
+     </div>
+   </section>
+
+Current Direction
 -----------------
 
-- a model-free method zoo
-- a model-based method zoo
-- a cooperative multi-agent environment zoo
-- a unified experiment storage layer
+- model-free and model-based method zoo
+- cooperative multi-agent environment zoo
+- unified Zarr experiment storage
 - fast batched CPU/GPU execution
+- browser demos backed by exported policies
 
-Start Here
-----------
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Start Here
-
-   getting_started
-
-Worlds
-------
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Worlds
-
-   environments/cooperative_grid
-
-Algorithms
-----------
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Algorithms
-
-   algorithms/q_learning
-
-Gallery
--------
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Gallery
-
-   gallery
-
-Design Notes
-------------
+Docs
+----
 
 .. toctree::
    :maxdepth: 2
-   :caption: Design Notes
+   :caption: Build
 
-   design/package
-   design/architecture
-   design/q_learning
-   design/storage
-   design/gpu
-
-API
----
-
-.. toctree::
-   :maxdepth: 1
-   :caption: API
-
+   getting_started
+   gallery
+   environments/index
+   algorithms/index
+   design/index
    api

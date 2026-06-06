@@ -18,12 +18,13 @@ TARGETS = [
     np.array([0.0, 5.0]),
     np.array([5.0, 0.0]),
 ]
-STARTS = [
-    (np.array([1.0, 1.0]), np.array([2.0, 9.0])),
-    (np.array([9.0, 1.0]), np.array([1.0, 8.0])),
-    (np.array([9.0, 9.0]), np.array([2.0, 2.0])),
-    (np.array([1.0, 9.0]), np.array([8.0, 2.0])),
-]
+ACTIONS = np.array([
+    [0.0, 0.0],
+    [0.0, -1.0],
+    [0.0, 1.0],
+    [-1.0, 0.0],
+    [1.0, 0.0],
+])
 
 
 def setup_style():
@@ -42,57 +43,132 @@ def setup_style():
     plt.rcParams["savefig.transparent"] = True
 
 
-def ease(t):
-    return t * t * (3 - 2 * t)
+def random_edge_start(random):
+    side = random.integers(4)
+    value = random.uniform(1.0, 9.0)
+    if side == 0:
+        return np.array([value, 0.8])
+    if side == 1:
+        return np.array([10.2, value])
+    if side == 2:
+        return np.array([value, 10.2])
+    return np.array([0.8, value])
 
 
-def segment(start, end, frames):
-    values = []
-    for index in range(frames):
-        t = ease(index / frames)
-        values.append((1 - t) * start + t * end)
-    return values
+def sample_traits(random):
+    return {
+        "temperature": random.uniform(0.11, 0.22),
+        "motor_noise": random.uniform(0.018, 0.045),
+        "cohesion": random.uniform(0.05, 0.13),
+        "inertia": random.uniform(0.04, 0.16),
+        "curvature": random.uniform(-0.22, 0.22),
+        "wander_rate": random.uniform(0.28, 0.58),
+        "action_bias": random.normal(0, 0.05, len(ACTIONS)),
+    }
 
 
-def path_through(start, mid, end):
-    values = []
-    values.extend(segment(start, mid, 9))
-    values.extend([mid.copy()] * 3)
-    values.extend(segment(mid, end, 9))
-    values.extend([end.copy()] * 5)
-    return values
+def q_value(position, velocity, action, partner, goal, traits):
+    next_position = np.clip(position + action * 0.34, 0, GRID_SIZE - 1)
+    progress = -np.linalg.norm(next_position - goal) * 1.8
+    pair_distance = -np.linalg.norm(next_position - partner) * traits["cohesion"]
+    inertia = np.dot(action, velocity) * traits["inertia"]
+    to_goal = goal - position
+    goal_distance = max(0.1, np.linalg.norm(to_goal))
+    tangent = np.array([-to_goal[1], to_goal[0]]) / goal_distance
+    curvature = np.dot(action, tangent) * traits["curvature"]
+    return progress + pair_distance + inertia + curvature
+
+
+def choose_action(position, velocity, partner, goal, traits, random):
+    scores = np.array([
+        q_value(position, velocity, action, partner, goal, traits)
+        for action in ACTIONS
+    ])
+    scores = scores + traits["action_bias"]
+    weights = np.exp((scores - scores.max()) / traits["temperature"])
+    probabilities = weights / weights.sum()
+    return ACTIONS[random.choice(len(ACTIONS), p=probabilities)]
+
+
+def simulate_trial(episode, random):
+    target = TARGETS[random.integers(len(TARGETS))]
+    positions = np.array([random_edge_start(random), random_edge_start(random)])
+    velocities = np.zeros((2, 2))
+    wander = np.zeros((2, 2))
+    traits = [sample_traits(random), sample_traits(random)]
+    frames = []
+    active = False
+    phase = 0
+    collected_frames = 0
+
+    for step in range(90):
+        if step in (12, 31, 52):
+            velocities[random.integers(2)] += random.normal(0, 0.85, 2)
+
+        for agent in range(2):
+            partner = 1 - agent
+            goal = target if active else CENTER
+            action = choose_action(
+                positions[agent],
+                velocities[agent],
+                positions[partner],
+                goal,
+                traits[agent],
+                random,
+            )
+            noise = random.normal(0, traits[agent]["motor_noise"], 2)
+            wander[agent] = wander[agent] * 0.92 + random.normal(0, traits[agent]["motor_noise"], 2) * traits[agent]["wander_rate"]
+            desired = action * 2.45 + noise + wander[agent]
+            velocities[agent] = velocities[agent] * 0.72 + desired * 0.28
+
+        positions = np.clip(positions + velocities * 0.2, 0, GRID_SIZE - 1)
+        phase_start = False
+
+        if not active and np.all(np.linalg.norm(positions - CENTER, axis=1) < 0.72):
+            active = True
+            phase = 1
+            phase_start = True
+
+        if active and np.all(np.linalg.norm(positions - target, axis=1) < 0.72):
+            collected_frames += 1
+        else:
+            collected_frames = 0
+
+        frames.append({
+            "episode": episode,
+            "phase": phase,
+            "agent_1": positions[0].copy(),
+            "agent_2": positions[1].copy(),
+            "target": target,
+            "active": active,
+            "collected": collected_frames > 0,
+            "episode_start": step == 0,
+            "phase_start": phase_start,
+        })
+
+        if collected_frames > 5:
+            break
+
+    return frames
 
 
 def build_trials():
+    random = np.random.default_rng(25)
     frames = []
-    for episode, starts in enumerate(STARTS):
-        target = TARGETS[episode % len(TARGETS)]
-        path_1 = path_through(starts[0], CENTER, target)
-        path_2 = path_through(starts[1], CENTER, target)
-        for frame, (agent_1, agent_2) in enumerate(zip(path_1, path_2)):
-            frames.append({
-                "episode": episode,
-                "agent_1": agent_1,
-                "agent_2": agent_2,
-                "target": target,
-                "active": frame >= 11,
-                "collected": frame >= len(path_1) - 5,
-                "episode_start": frame == 0,
-            })
+    for episode in tqdm(range(5), desc="Simulating cooperative grid", unit="trial"):
+        trial_frames = simulate_trial(episode, random)
+        frames.extend(trial_frames)
+        last = trial_frames[-1]
         frames.extend([{
-            "episode": episode,
-            "agent_1": target.copy(),
-            "agent_2": target.copy(),
-            "target": target,
-            "active": True,
-            "collected": True,
+            **last,
             "episode_start": False,
+            "phase_start": False,
         }] * 2)
     return frames
 
 
 def heading(frames, key, index):
-    if index == 0 or frames[index]["episode_start"]:
+    if index == 0 or frames[index]["episode_start"] or frames[index]["phase_start"]:
         delta = frames[index + 1][key] - frames[index][key]
     else:
         delta = frames[index][key] - frames[index - 1][key]
@@ -183,9 +259,10 @@ def build_animation(frames):
     def recent_points(index, key):
         start = max(0, index - 12)
         episode = frames[index]["episode"]
+        phase = frames[index]["phase"]
         window = []
         for item in frames[start:index + 1]:
-            if item["episode"] == episode:
+            if item["episode"] == episode and item["phase"] == phase:
                 window.append(item[key])
         return np.array(window)
 
