@@ -29,7 +29,9 @@ html_theme_options = {
     "github_url": "https://github.com/rgs2151/marlax",
     "navbar_align": "left",
     "navigation_with_keys": True,
+    "collapse_navigation": False,
     "show_toc_level": 2,
+    "show_nav_level": 2,
     "secondary_sidebar_items": ["page-toc"],
 }
 

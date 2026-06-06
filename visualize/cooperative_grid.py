@@ -10,6 +10,20 @@ from tqdm import tqdm
 
 
 OUTPUT = Path("docs/source/_static/gallery/cooperative_grid.gif")
+GRID_SIZE = 11
+CENTER = np.array([5.0, 5.0])
+TARGETS = [
+    np.array([10.0, 5.0]),
+    np.array([5.0, 10.0]),
+    np.array([0.0, 5.0]),
+    np.array([5.0, 0.0]),
+]
+STARTS = [
+    (np.array([1.0, 1.0]), np.array([2.0, 9.0])),
+    (np.array([9.0, 1.0]), np.array([1.0, 8.0])),
+    (np.array([9.0, 9.0]), np.array([2.0, 2.0])),
+    (np.array([1.0, 9.0]), np.array([8.0, 2.0])),
+]
 
 
 def setup_style():
@@ -28,47 +42,74 @@ def setup_style():
     plt.rcParams["savefig.transparent"] = True
 
 
-def interpolate_path(points, repeats=3):
+def ease(t):
+    return t * t * (3 - 2 * t)
+
+
+def segment(start, end, frames):
+    values = []
+    for index in range(frames):
+        t = ease(index / frames)
+        values.append((1 - t) * start + t * end)
+    return values
+
+
+def path_through(start, mid, end):
+    values = []
+    values.extend(segment(start, mid, 9))
+    values.extend([mid.copy()] * 3)
+    values.extend(segment(mid, end, 9))
+    values.extend([end.copy()] * 5)
+    return values
+
+
+def build_trials():
     frames = []
-    for start, end in zip(points[:-1], points[1:]):
-        start = np.array(start, dtype=float)
-        end = np.array(end, dtype=float)
-        for step in range(repeats):
-            t = step / repeats
-            frames.append((1 - t) * start + t * end)
-    frames.append(np.array(points[-1], dtype=float))
-    return np.array(frames)
+    for episode, starts in enumerate(STARTS):
+        target = TARGETS[episode % len(TARGETS)]
+        path_1 = path_through(starts[0], CENTER, target)
+        path_2 = path_through(starts[1], CENTER, target)
+        for frame, (agent_1, agent_2) in enumerate(zip(path_1, path_2)):
+            frames.append({
+                "episode": episode,
+                "agent_1": agent_1,
+                "agent_2": agent_2,
+                "target": target,
+                "active": frame >= 11,
+                "collected": frame >= len(path_1) - 5,
+                "episode_start": frame == 0,
+            })
+        frames.extend([{
+            "episode": episode,
+            "agent_1": target.copy(),
+            "agent_2": target.copy(),
+            "target": target,
+            "active": True,
+            "collected": True,
+            "episode_start": False,
+        }] * 2)
+    return frames
 
 
-def demo_paths():
-    center = (5, 5)
-    reward = (10, 5)
-    agent_1 = [(1, 2), (2, 2), (3, 3), (4, 4), center, (6, 5), (7, 5), (8, 5), (9, 5), reward]
-    agent_2 = [(2, 8), (3, 8), (4, 7), (5, 6), center, (6, 5), (7, 5), (8, 5), (9, 5), reward]
-    path_1 = interpolate_path(agent_1)
-    path_2 = interpolate_path(agent_2)
-    return path_1, path_2
-
-
-def heading(path, index):
-    if index == 0:
-        delta = path[1] - path[0]
+def heading(frames, key, index):
+    if index == 0 or frames[index]["episode_start"]:
+        delta = frames[index + 1][key] - frames[index][key]
     else:
-        delta = path[index] - path[index - 1]
+        delta = frames[index][key] - frames[index - 1][key]
     if np.linalg.norm(delta) == 0:
         return 0
     return np.degrees(np.arctan2(delta[1], delta[0])) - 90
 
 
 def make_mouse(ax, color):
-    body = Ellipse((0, 0), 0.58, 0.9, color=color, alpha=0.95, zorder=4)
-    head = Circle((0, 0), 0.28, color=color, alpha=0.95, zorder=5)
-    ear_1 = Circle((0, 0), 0.13, color=color, alpha=0.95, zorder=5)
-    ear_2 = Circle((0, 0), 0.13, color=color, alpha=0.95, zorder=5)
-    eye_1 = Circle((0, 0), 0.035, color="black", zorder=6)
-    eye_2 = Circle((0, 0), 0.035, color="black", zorder=6)
-    nose = Polygon([(0, 0), (0, 0), (0, 0)], color=color, zorder=6)
-    tail, = ax.plot([], [], color=color, linewidth=2, alpha=0.9, zorder=3)
+    body = Ellipse((0, 0), 0.58, 0.9, color=color, alpha=0.95, zorder=5)
+    head = Circle((0, 0), 0.28, color=color, alpha=0.95, zorder=6)
+    ear_1 = Circle((0, 0), 0.13, color=color, alpha=0.95, zorder=6)
+    ear_2 = Circle((0, 0), 0.13, color=color, alpha=0.95, zorder=6)
+    eye_1 = Circle((0, 0), 0.035, color="black", zorder=7)
+    eye_2 = Circle((0, 0), 0.035, color="black", zorder=7)
+    nose = Polygon([(0, 0), (0, 0), (0, 0)], color=color, zorder=7)
+    tail, = ax.plot([], [], color=color, linewidth=2, alpha=0.9, zorder=4)
     for patch in [body, head, ear_1, ear_2, eye_1, eye_2, nose]:
         ax.add_patch(patch)
     return {
@@ -107,69 +148,86 @@ def set_mouse(mouse, x, y, angle):
 
 
 def heart_xy(cx, cy, size):
-    t = np.linspace(0, 2 * np.pi, 100)
+    t = np.linspace(0, 2 * np.pi, 120)
     x = cx + size * (16 * np.sin(t) ** 3) / 20
     y = cy + size * (13 * np.cos(t) - 5 * np.cos(2 * t) - 2 * np.cos(3 * t) - np.cos(4 * t)) / 20
     return np.column_stack([x, y + 0.4])
 
 
-def build_animation(path_1, path_2):
+def build_animation(frames):
     setup_style()
     fig, ax = plt.subplots(figsize=(4.8, 4.8), dpi=120)
     fig.subplots_adjust(left=0.02, right=0.98, bottom=0.02, top=0.98)
-    ax.set_xlim(-0.7, 10.7)
-    ax.set_ylim(-0.7, 10.7)
+    ax.set_xlim(-0.7, GRID_SIZE - 0.3)
+    ax.set_ylim(-0.7, GRID_SIZE - 0.3)
     ax.set_aspect("equal")
     ax.set_xticks([])
     ax.set_yticks([])
     for spine in ax.spines.values():
         spine.set_visible(False)
 
-    for x in range(11):
-        for y in range(11):
+    for x in range(GRID_SIZE):
+        for y in range(GRID_SIZE):
             ax.add_patch(Rectangle((x - 0.5, y - 0.5), 1, 1, facecolor="white", edgecolor="0.88", linewidth=0.7, zorder=0))
 
-    center = ax.scatter([5], [5], marker="s", s=240, color="gold", alpha=0.75, edgecolors="white", linewidths=1.5, zorder=1)
-    reward = ax.scatter([], [], marker="o", s=280, color="darkgreen", alpha=0.75, edgecolors="white", linewidths=1.5, zorder=1)
-    heart = Polygon(np.empty((0, 2)), color="purple", alpha=0.0, zorder=8)
+    trail_1, = ax.plot([], [], color="darkred", alpha=0.24, linewidth=2, zorder=2)
+    trail_2, = ax.plot([], [], color="midnightblue", alpha=0.24, linewidth=2, zorder=2)
+    center = ax.scatter([CENTER[0]], [CENTER[1]], marker="s", s=250, color="gold", alpha=0.8, edgecolors="white", linewidths=1.4, zorder=1)
+    reward = ax.scatter([], [], marker="o", s=300, color="darkgreen", alpha=0.78, edgecolors="white", linewidths=1.4, zorder=1)
+    heart = Polygon(np.empty((0, 2)), color="purple", alpha=0.0, zorder=9)
     ax.add_patch(heart)
 
     mouse_1 = make_mouse(ax, "darkred")
     mouse_2 = make_mouse(ax, "midnightblue")
 
-    def update(frame):
-        active = frame >= 13
-        collected = frame >= len(path_1) - 4
-        reward.set_offsets(np.array([[10, 5]]) if active else np.empty((0, 2)))
-        center.set_offsets(np.empty((0, 2)) if active else np.array([[5, 5]]))
+    def recent_points(index, key):
+        start = max(0, index - 12)
+        episode = frames[index]["episode"]
+        window = []
+        for item in frames[start:index + 1]:
+            if item["episode"] == episode:
+                window.append(item[key])
+        return np.array(window)
 
-        set_mouse(mouse_1, path_1[frame, 0], path_1[frame, 1], heading(path_1, frame))
-        set_mouse(mouse_2, path_2[frame, 0], path_2[frame, 1], heading(path_2, frame))
+    def update(index):
+        frame = frames[index]
+        reward.set_offsets(np.array([frame["target"]]) if frame["active"] else np.empty((0, 2)))
+        center.set_offsets(np.empty((0, 2)) if frame["active"] else np.array([CENTER]))
 
-        if collected:
-            cx = (path_1[frame, 0] + path_2[frame, 0]) / 2
-            cy = (path_1[frame, 1] + path_2[frame, 1]) / 2
-            heart.set_xy(heart_xy(cx, cy, 0.85))
-            heart.set_alpha(0.95)
+        points_1 = recent_points(index, "agent_1")
+        points_2 = recent_points(index, "agent_2")
+        trail_1.set_data(points_1[:, 0], points_1[:, 1])
+        trail_2.set_data(points_2[:, 0], points_2[:, 1])
+
+        set_mouse(mouse_1, frame["agent_1"][0], frame["agent_1"][1], heading(frames, "agent_1", index))
+        set_mouse(mouse_2, frame["agent_2"][0], frame["agent_2"][1], heading(frames, "agent_2", index))
+
+        if frame["collected"]:
+            center_point = (frame["agent_1"] + frame["agent_2"]) / 2
+            heart.set_xy(heart_xy(center_point[0], center_point[1], 0.9))
+            heart.set_alpha(0.9)
         else:
             heart.set_xy(np.empty((0, 2)))
             heart.set_alpha(0)
 
-        return [center, reward, heart] + list(mouse_1.values()) + list(mouse_2.values())
+        artists = [trail_1, trail_2, center, reward, heart]
+        artists.extend(mouse_1.values())
+        artists.extend(mouse_2.values())
+        return artists
 
-    return animation.FuncAnimation(fig, update, frames=len(path_1), interval=140, blit=False)
+    return animation.FuncAnimation(fig, update, frames=len(frames), interval=115, blit=False)
 
 
 def save_animation(ani, output, total):
     output.parent.mkdir(parents=True, exist_ok=True)
     with tqdm(total=total, desc="Saving cooperative grid GIF", unit="frame") as progress:
-        ani.save(output, writer=PillowWriter(fps=7), progress_callback=lambda frame, count: progress.update(1))
+        ani.save(output, writer=PillowWriter(fps=9), progress_callback=lambda frame, count: progress.update(1))
 
 
 def main():
-    path_1, path_2 = demo_paths()
-    ani = build_animation(path_1, path_2)
-    save_animation(ani, OUTPUT, len(path_1))
+    frames = build_trials()
+    ani = build_animation(frames)
+    save_animation(ani, OUTPUT, len(frames))
 
 
 if __name__ == "__main__":
