@@ -29,3 +29,7 @@ XLA_PYTHON_CLIENT_PREALLOCATE=false conda run -n marlax python experiments/coop_
 ```bash
 python -m http.server 8000 --directory site
 ```
+
+## Figure Style
+
+Use `STYLE.md` for diagnostic plot styling.
