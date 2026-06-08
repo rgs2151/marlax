@@ -10,7 +10,7 @@ const size = env.size;
 const moves = env.moves;
 const targets = env.targets;
 const center = env.center;
-const random = mulberry32(Math.floor(performance.timeOrigin));
+const scenarios = data.showcase.scenarios;
 
 const agents = [
   makeAgent(0, "#f2f2f2"),
@@ -20,7 +20,7 @@ const agents = [
 let board = { x: 0, y: 0, size: 1, cell: 1 };
 let active = false;
 let targetId = 0;
-let stepCount = 0;
+let scenarioIndex = 0;
 let collectedFrames = 0;
 let decisionClock = 0;
 let draggedAgent = null;
@@ -28,20 +28,9 @@ let pointerGrid = null;
 let pointerDown = false;
 let lastTime = performance.now();
 
-resetTrial();
+loadScenario(0);
 resize();
 requestAnimationFrame(animate);
-
-function mulberry32(seed) {
-  let value = seed >>> 0;
-  return function () {
-    value += 0x6D2B79F5;
-    let t = value;
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
 
 function clamp(value, lo, hi) {
   return Math.max(lo, Math.min(hi, value));
@@ -54,38 +43,27 @@ function makeAgent(id, stroke) {
     position: [0, 0],
     velocity: [0, 0],
     cell: [0, 0],
-    speed: 3.1 + random() * 0.35,
-    temperature: 0.02 + random() * 0.025,
+    speed: 3.2,
   };
 }
 
-function randomEdgeCell() {
-  const side = Math.floor(random() * 4);
-  const value = 1 + Math.floor(random() * (size - 2));
-  if (side === 0) {
-    return [value, 0];
-  }
-  if (side === 1) {
-    return [size - 1, value];
-  }
-  if (side === 2) {
-    return [value, size - 1];
-  }
-  return [0, value];
-}
-
-function resetTrial() {
+function loadScenario(index) {
+  const scenario = scenarios[index % scenarios.length];
   active = false;
-  stepCount = 0;
   collectedFrames = 0;
   decisionClock = 0;
-  targetId = Math.floor(random() * targets.length);
+  targetId = scenario.target_id;
+  scenarioIndex = index % scenarios.length;
   agents.forEach((agent) => {
-    const start = randomEdgeCell();
+    const start = scenario.starts[agent.id];
     agent.position = [start[0], start[1]];
     agent.velocity = [0, 0];
-    agent.cell = start;
+    agent.cell = [start[0], start[1]];
   });
+}
+
+function advanceScenario() {
+  loadScenario(scenarioIndex + 1);
 }
 
 function stateId() {
@@ -101,18 +79,16 @@ function qValue(agentId, state, action) {
 
 function chooseAction(agent) {
   const state = stateId();
-  const values = moves.map((_, action) => qValue(agent.id, state, action));
-  const maxValue = Math.max(...values);
-  const weights = values.map((value) => Math.exp((value - maxValue) / agent.temperature));
-  const total = weights.reduce((a, b) => a + b, 0);
-  let draw = random() * total;
-  for (let action = 0; action < weights.length; action += 1) {
-    draw -= weights[action];
-    if (draw <= 0) {
-      return action;
+  let bestAction = 0;
+  let bestValue = qValue(agent.id, state, 0);
+  for (let action = 1; action < moves.length; action += 1) {
+    const value = qValue(agent.id, state, action);
+    if (value > bestValue) {
+      bestAction = action;
+      bestValue = value;
     }
   }
-  return 0;
+  return bestAction;
 }
 
 function updatePolicy(dt) {
@@ -167,7 +143,6 @@ function updatePhysics(dt) {
 }
 
 function updateEnvState() {
-  stepCount += 1;
   const bothCenter = agents.every((agent) => agent.cell[0] === center[0] && agent.cell[1] === center[1]);
   if (!active && bothCenter) {
     active = true;
@@ -182,8 +157,8 @@ function updateEnvState() {
     collectedFrames = 0;
   }
 
-  if (collectedFrames > 24 || stepCount > env.max_steps * 16) {
-    resetTrial();
+  if (collectedFrames > 24) {
+    advanceScenario();
   }
 }
 
@@ -218,7 +193,12 @@ function draw() {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   drawGrid();
   drawMarkers();
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(board.x, board.y, board.size, board.size);
+  ctx.clip();
   agents.forEach(drawMouse);
+  ctx.restore();
 }
 
 function drawGrid() {

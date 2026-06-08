@@ -21,7 +21,7 @@ conda run -n marlax uv pip install --python /home/dev/miniconda3/envs/marlax/bin
 
 ```bash
 conda run -n marlax python -m pytest -q
-conda run -n marlax python experiments/coop_grid_q_learning.py
+XLA_PYTHON_CLIENT_PREALLOCATE=false conda run -n marlax python experiments/coop_grid_q_learning/run.py
 ```
 
 ## Gallery

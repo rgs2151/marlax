@@ -1,0 +1,95 @@
+{
+  "run_name": "coop_grid_q_learning",
+  "size": 5,
+  "num_envs": 2048,
+  "max_steps": 48,
+  "iterations": 10,
+  "chunks_per_iteration": 6,
+  "chunk_steps": 1000,
+  "scenarios": [
+    {
+      "name": "target_0_cross_edges",
+      "target_id": 0,
+      "starts": [
+        [
+          1,
+          0
+        ],
+        [
+          3,
+          4
+        ]
+      ]
+    },
+    {
+      "name": "target_1_right_bottom",
+      "target_id": 1,
+      "starts": [
+        [
+          0,
+          1
+        ],
+        [
+          4,
+          3
+        ]
+      ]
+    },
+    {
+      "name": "target_2_bottom_left",
+      "target_id": 2,
+      "starts": [
+        [
+          4,
+          4
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "name": "target_3_top_left",
+      "target_id": 3,
+      "starts": [
+        [
+          3,
+          0
+        ],
+        [
+          1,
+          4
+        ]
+      ]
+    },
+    {
+      "name": "target_4_vertical",
+      "target_id": 4,
+      "starts": [
+        [
+          0,
+          4
+        ],
+        [
+          4,
+          0
+        ]
+      ]
+    },
+    {
+      "name": "target_5_horizontal",
+      "target_id": 5,
+      "starts": [
+        [
+          0,
+          2
+        ],
+        [
+          4,
+          2
+        ]
+      ]
+    }
+  ]
+}
