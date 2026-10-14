@@ -1,5 +1,10 @@
 # Interactive simulation gallery
 
+**Scope update:** Paired docking and orbit rendezvous are rejected, unimplemented
+proposals. Their details below are historical, not the current demo plan. See
+[Demo candidates](demo-candidates.md) for the researched shortlist and the shift
+toward recorded demonstrations.
+
 Design and local JavaScript audit, 14 October 2026. No runtime or environment
 implementation is included in this change. This document narrows the earlier
 [browser handoff](browser-handoff.md) proposal to two or three interactive demos.

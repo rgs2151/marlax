@@ -1,5 +1,10 @@
 # JavaScript runtime audit and redesign
 
+**Scope update:** Paired docking and orbit rendezvous are rejected, unimplemented
+proposals. Their details below are historical, not the current demo plan. See
+[Demo candidates](demo-candidates.md) for the researched shortlist and the shift
+toward recorded demonstrations.
+
 14 October 2026. Scope: the existing grid and the proposed docking and orbit
 simulations. This is an implementation specification, not a claim that the new
 runtime or environments exist. It refines [Simulation gallery](simulation-gallery.md)

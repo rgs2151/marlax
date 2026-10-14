@@ -8,7 +8,8 @@ and otherwise follows the frozen greedy policy. Playback uses 650 ms per move
 and a 1.5-second terminal hold. These live settings are in `site/js/demos.js`;
 recorded exports retain explicit starts and deterministic greedy execution. Artwork follows [the approved visual standard](aesthetics.md).
 This guide describes the implemented interfaces; [the audit](javascript-redesign.md)
-records the rationale. Docking and orbit are not implemented yet.
+records the rationale. Docking and orbit were rejected proposals and are not implemented.
+See [Demo candidates](demo-candidates.md) for the current research shortlist.
 
 ## Run locally
 

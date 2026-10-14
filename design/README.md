@@ -23,7 +23,11 @@ The first implementation should make the existing cooperative grid example fit
 this structure. Additional methods and environments should exercise the boundaries
 before the project grows a larger framework.
 
-The current two-to-three-demo scope and JavaScript audit are in
+The current environment shortlist is [Demo candidates](demo-candidates.md).
+The cooperative grid remains demo one. Paired docking and orbit rendezvous are
+rejected proposals; the new priority is believable recorded behaviour.
+
+The earlier two-to-three-demo scope and JavaScript audit are in
 [Interactive simulation gallery](simulation-gallery.md). The detailed
 [JavaScript redesign audit](javascript-redesign.md) defines the runtime boundaries,
 interaction ordering and environment-specific requirements for implementation.
