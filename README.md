@@ -1,12 +1,6 @@
 # MARLAX
 
-[Documentation](https://rgs2151.github.io/marlax/) ·
-[API tutorials](https://rgs2151.github.io/marlax/tutorials.html) ·
-[Tool inventory](https://rgs2151.github.io/marlax/inventory.html) ·
-[Interactive gallery](https://rgs2151.github.io/marlax/gallery/)
-
-[![Deployment](https://github.com/rgs2151/marlax/actions/workflows/pages.yml/badge.svg?branch=main)](https://github.com/rgs2151/marlax/actions/workflows/pages.yml)
-[![Documentation](https://img.shields.io/badge/docs-Sphinx-blue)](https://rgs2151.github.io/marlax/)
+[![docs](https://img.shields.io/github/actions/workflow/status/rgs2151/marlax/pages.yml?branch=main&label=docs)](https://rgs2151.github.io/marlax/)
 [![Python](https://img.shields.io/badge/Python-3.11%2B-blue)](pyproject.toml)
 [![JAX](https://img.shields.io/badge/backend-JAX-009688)](https://github.com/jax-ml/jax)
 [![Status](https://img.shields.io/badge/status-alpha-orange)](pyproject.toml)

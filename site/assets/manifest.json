@@ -1,0 +1,258 @@
+{
+  "collection": "Contour",
+  "version": 1,
+  "assets": [
+    {
+      "id": "orbit",
+      "name": "Orbit mouse",
+      "category": "Mice",
+      "file": "animals/mice/orbit.svg",
+      "description": "A rounded top-view mouse with cupped ears, tapered snout, engraved flank lines and a curled tail.",
+      "viewBox": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "anchor": [
+        128.0,
+        128.0
+      ],
+      "facing": "north"
+    },
+    {
+      "id": "dart",
+      "name": "Dart mouse",
+      "category": "Mice",
+      "file": "animals/mice/dart.svg",
+      "description": "A slender top-view mouse with small swept ears, a long nose and a looped tail.",
+      "viewBox": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "anchor": [
+        128.0,
+        128.0
+      ],
+      "facing": "north"
+    },
+    {
+      "id": "halo",
+      "name": "Halo mouse",
+      "category": "Mice",
+      "file": "animals/mice/halo.svg",
+      "description": "A compact top-view mouse with oversized sculpted ears, a pointed muzzle and a coiled tail.",
+      "viewBox": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "anchor": [
+        128.0,
+        128.0
+      ],
+      "facing": "north"
+    },
+    {
+      "id": "capuchin",
+      "name": "Capuchin",
+      "category": "Monkeys",
+      "file": "animals/monkeys/capuchin.svg",
+      "description": "A seated capuchin token with a heart-shaped facial mask, grasping hands and a curling tail; facing north.",
+      "viewBox": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "anchor": [
+        128.0,
+        128.0
+      ],
+      "facing": "north"
+    },
+    {
+      "id": "macaque",
+      "name": "Macaque",
+      "category": "Monkeys",
+      "file": "animals/monkeys/macaque.svg",
+      "description": "A broad-headed macaque with wide ear bowls, a sculpted face mask and articulated hands; facing north.",
+      "viewBox": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "anchor": [
+        128.0,
+        128.0
+      ],
+      "facing": "north"
+    },
+    {
+      "id": "elephant",
+      "name": "Elephant",
+      "category": "Animals",
+      "file": "animals/elephant.svg",
+      "description": "An overhead elephant with fan-shaped ears, engraved skin contours, tusks and a north-facing trunk.",
+      "viewBox": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "anchor": [
+        128.0,
+        128.0
+      ],
+      "facing": "north"
+    },
+    {
+      "id": "fox",
+      "name": "Fox",
+      "category": "Animals",
+      "file": "animals/fox.svg",
+      "description": "A pointed-eared fox with angular cheek contours and a curled brush tail, seen from above.",
+      "viewBox": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "anchor": [
+        128.0,
+        128.0
+      ],
+      "facing": "north"
+    },
+    {
+      "id": "coupe",
+      "name": "Touring coupe",
+      "category": "Vehicles",
+      "file": "vehicles/coupe.svg",
+      "description": "A top-down touring coupe with a tapered bonnet, panoramic glass and fine coachwork lines.",
+      "viewBox": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "anchor": [
+        128.0,
+        128.0
+      ],
+      "facing": "north"
+    },
+    {
+      "id": "rover",
+      "name": "Field rover",
+      "category": "Vehicles",
+      "file": "vehicles/rover.svg",
+      "description": "A top-down field rover with a square chassis, roof ribs and a panoramic windscreen.",
+      "viewBox": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "anchor": [
+        128.0,
+        128.0
+      ],
+      "facing": "north"
+    },
+    {
+      "id": "lattice",
+      "name": "Lattice board",
+      "category": "Boards",
+      "file": "boards/lattice.svg",
+      "description": "A five-by-five lattice grid. Playable area begins at 56,56 with 80-unit cells.",
+      "viewBox": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "anchor": [
+        256.0,
+        256.0
+      ],
+      "facing": null
+    },
+    {
+      "id": "islands",
+      "name": "Island board",
+      "category": "Boards",
+      "file": "boards/islands.svg",
+      "description": "A five-by-five islands grid. Playable area begins at 56,56 with 80-unit cells.",
+      "viewBox": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "anchor": [
+        256.0,
+        256.0
+      ],
+      "facing": null
+    },
+    {
+      "id": "circuit",
+      "name": "Circuit board",
+      "category": "Boards",
+      "file": "boards/circuit.svg",
+      "description": "A five-by-five circuit grid. Playable area begins at 56,56 with 80-unit cells.",
+      "viewBox": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "anchor": [
+        256.0,
+        256.0
+      ],
+      "facing": null
+    },
+    {
+      "id": "beacon",
+      "name": "Target beacon",
+      "category": "Markers",
+      "file": "markers/beacon.svg",
+      "description": "A concentric target marker with a four-point centre.",
+      "viewBox": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "anchor": [
+        128.0,
+        128.0
+      ],
+      "facing": "north"
+    },
+    {
+      "id": "portal",
+      "name": "Meeting point",
+      "category": "Markers",
+      "file": "markers/portal.svg",
+      "description": "An octagonal meeting-point marker with paired directional chevrons.",
+      "viewBox": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "anchor": [
+        128.0,
+        128.0
+      ],
+      "facing": "north"
+    }
+  ]
+}
