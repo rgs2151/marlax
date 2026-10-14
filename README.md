@@ -5,9 +5,9 @@
 [Tool inventory](https://rgs2151.github.io/marlax/inventory.html) ·
 [Interactive gallery](https://rgs2151.github.io/marlax/gallery/)
 
-[![CI](https://github.com/rgs2151/marlax/actions/workflows/pages.yml/badge.svg?branch=main)](https://github.com/rgs2151/marlax/actions/workflows/pages.yml)
+[![Deployment](https://github.com/rgs2151/marlax/actions/workflows/pages.yml/badge.svg?branch=main)](https://github.com/rgs2151/marlax/actions/workflows/pages.yml)
 [![Documentation](https://img.shields.io/badge/docs-Sphinx-blue)](https://rgs2151.github.io/marlax/)
-[![Python](https://img.shields.io/badge/CI%20Python-3.13-blue)](.github/workflows/pages.yml)
+[![Python](https://img.shields.io/badge/Python-3.13-blue)](.github/workflows/pages.yml)
 [![JAX](https://img.shields.io/badge/backend-JAX-009688)](https://github.com/jax-ml/jax)
 [![Status](https://img.shields.io/badge/status-alpha-orange)](pyproject.toml)
 
@@ -31,7 +31,7 @@ source .venv/bin/activate
 python -m pip install -e '.[dev,docs]'
 ```
 
-Python 3.13 is used in CI. For local GPU training, add the `gpu` extra for CUDA 13.
+Documentation builds use Python 3.13. For local GPU training, add the `gpu` extra for CUDA 13.
 The `tutorials` extra adds Jupyter and plotting; `viz` adds matplotlib alone.
 The optional conda environment is defined in [environment.yml](environment.yml).
 
@@ -113,17 +113,14 @@ configuration and measurements.
 
 ## CI and publishing
 
-[GitHub Actions](.github/workflows/pages.yml) runs the small CPU suite, builds and
-imports the wheel, builds Sphinx with warnings treated as errors, and checks saved
-notebook outputs, downloads, figures, and local documentation links. Pull requests
-produce a downloadable `marlax-site` artifact. Successful builds on `main` publish
-one GitHub Pages site:
+[GitHub Actions](.github/workflows/pages.yml) builds Sphinx from saved notebook
+outputs and publishes successful builds on `main` to GitHub Pages:
 
-- `/marlax/gallery/` — interactive gallery.
 - `/marlax/` — documentation, tutorials, inventory, and API reference.
+- `/marlax/gallery/` — interactive gallery.
 
-Package checks and documentation builds run in parallel. Deployment requires
-both jobs to pass. The workflow also supports manual dispatch.
+Pull requests produce a downloadable `marlax-site` artifact. The workflow also
+supports manual dispatch. Tests and documentation checks run locally.
 
 For local verification:
 

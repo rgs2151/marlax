@@ -180,7 +180,7 @@ Repository commands and examples
    * - ``python scripts/check_docs.py docs/build/html``
      - Check saved tutorial outputs, generated pages, downloads, images, and local links
    * - ``.github/workflows/pages.yml``
-     - Run CPU checks and documentation builds on pull requests; publish successful main builds to Pages
+     - Build documentation on pull requests; publish successful main builds to Pages
    * - ``python -m pytest -q``
      - Run the small correctness suite
    * - ``sphinx-build -W --keep-going -b html docs/source docs/build/html``

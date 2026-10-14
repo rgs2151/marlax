@@ -62,5 +62,6 @@ Documentation and checks
 
 Documentation uses reStructuredText, Sphinx autodoc, and the PyData Sphinx
 theme with light mode as the default. Notebook outputs are saved in the
-repository and rendered without executing training. GitHub Actions validates
-pull requests and publishes successful builds from ``main``.
+repository and rendered without executing training. GitHub Actions builds
+documentation and publishes successful builds from ``main``. Run tests and
+documentation checks locally before pushing.
