@@ -36,7 +36,7 @@ What each tutorial teaches
      - Worked TD updates and training runs
    * - Training and evaluation
      - Control JIT chunks, load the pretrained table, evaluate, and roll out
-     - All 3,750 grid scenarios and a trajectory plot
+     - Evaluation metric fields and a trajectory plot
    * - Checkpoints
      - Save an inference policy, restore full state, and continue SARSA
      - Equality with uninterrupted training
@@ -51,7 +51,7 @@ From the repository root, in the environment where you want to run the notebooks
 
 .. code-block:: bash
 
-   pip install -e ".[docs,tutorials]"
+   pip install -e ".[tutorials]"
    python -m ipykernel install --user --name marlax --display-name "MARLAX"
    python -m jupyterlab docs/source/notebooks
 
@@ -69,16 +69,6 @@ The learning-method tutorial uses 8,192-transition runs to demonstrate method
 selection. For full training, use the ``demo`` profile in :doc:`experiments`.
 The training-and-evaluation tutorial evaluates the included pretrained policy.
 Checkpoint examples use temporary directories and clean them up at the end.
-
-To execute all notebooks and refresh their saved outputs:
-
-.. code-block:: bash
-
-   python docs/execute_notebooks.py
-   JAX_PLATFORMS=cpu sphinx-build -W --keep-going -b html docs/source docs/build/html
-
-The execution script starts a fresh kernel using its own Python interpreter for
-each notebook.
 
 Downloads
 -------------

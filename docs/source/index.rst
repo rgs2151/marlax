@@ -18,7 +18,6 @@ to see a trained cooperative policy.
    tutorials
    inventory
    api
-   validation
 
 * :ref:`genindex`
 * :ref:`modindex`

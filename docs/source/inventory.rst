@@ -151,8 +151,6 @@ Contracts and data records
 
 Import high-level functions and contracts with ``import marlax as mx``. Import
 implementations from ``marlax.envs``, ``marlax.models``, and ``marlax.methods``.
-Implementation helpers such as ``select_worlds`` and ``sample_actions`` are
-internal runner utilities, not separate extension contracts.
 
 Repository commands and examples
 ------------------------------------
@@ -175,16 +173,6 @@ Repository commands and examples
      - Create an SVG from saved metrics, with no learning run
    * - ``examples/coordination.py``
      - Define and train a custom one-step cooperative environment
-   * - ``docs/execute_notebooks.py``
-     - Execute all six notebooks and save their outputs
-   * - ``python scripts/check_docs.py docs/build/html``
-     - Check saved tutorial outputs, generated pages, downloads, images, and local links
-   * - ``.github/workflows/pages.yml``
-     - Build documentation on pull requests; publish successful main builds to Pages
-   * - ``python -m pytest -q``
-     - Run the small correctness suite
-   * - ``sphinx-build -W --keep-going -b html docs/source docs/build/html``
-     - Build guides, rendered notebooks, inventory, and API reference without notebook execution
    * - ``python -m http.server 8000 --directory site``
      - Serve the interactive gallery locally
 

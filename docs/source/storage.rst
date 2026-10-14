@@ -5,6 +5,8 @@ MARLAX stores numeric arrays in compressed NPZ files and configuration in JSON.
 ``numpy.load`` uses ``allow_pickle=False``. Model loading never executes serialized
 Python objects.
 
+The examples below continue from the training run in :doc:`getting_started`.
+
 Inference policy
 ----------------
 

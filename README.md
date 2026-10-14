@@ -7,7 +7,7 @@
 
 [![Deployment](https://github.com/rgs2151/marlax/actions/workflows/pages.yml/badge.svg?branch=main)](https://github.com/rgs2151/marlax/actions/workflows/pages.yml)
 [![Documentation](https://img.shields.io/badge/docs-Sphinx-blue)](https://rgs2151.github.io/marlax/)
-[![Python](https://img.shields.io/badge/Python-3.13-blue)](.github/workflows/pages.yml)
+[![Python](https://img.shields.io/badge/Python-3.11%2B-blue)](pyproject.toml)
 [![JAX](https://img.shields.io/badge/backend-JAX-009688)](https://github.com/jax-ml/jax)
 [![Status](https://img.shields.io/badge/status-alpha-orange)](pyproject.toml)
 
@@ -28,10 +28,10 @@ git clone https://github.com/rgs2151/marlax.git
 cd marlax
 python -m venv .venv
 source .venv/bin/activate
-python -m pip install -e '.[dev,docs]'
+python -m pip install -e .
 ```
 
-Documentation builds use Python 3.13. For local GPU training, add the `gpu` extra for CUDA 13.
+Requires Python 3.11 or newer. For GPU training, add the `gpu` extra for CUDA 13.
 The `tutorials` extra adds Jupyter and plotting; `viz` adds matplotlib alone.
 The optional conda environment is defined in [environment.yml](environment.yml).
 
@@ -106,28 +106,6 @@ and evaluation under fresh `runs/` directories. See
 [the recipe](experiments/coop_grid_td/README.md)
 and [storage guide](https://rgs2151.github.io/marlax/storage.html).
 
-Example runs reached **100% collection across 3,750 start/target cases** for all
-three methods after 12.288 million world transitions using seed 0. See
-[evaluation results](https://rgs2151.github.io/marlax/validation.html) for the
-configuration and measurements.
+## Contributing
 
-## CI and publishing
-
-[GitHub Actions](.github/workflows/pages.yml) builds Sphinx from saved notebook
-outputs and publishes successful builds on `main` to GitHub Pages:
-
-- `/marlax/` — documentation, tutorials, inventory, and API reference.
-- `/marlax/gallery/` — interactive gallery.
-
-Pull requests produce a downloadable `marlax-site` artifact. The workflow also
-supports manual dispatch. Tests and documentation checks run locally.
-
-For local verification:
-
-```bash
-JAX_PLATFORMS=cpu python -m pytest -q
-JAX_PLATFORMS=cpu python -m sphinx -W --keep-going -b html docs/source docs/build/html
-python scripts/check_docs.py docs/build/html
-```
-
-Use [STYLE.md](STYLE.md) when contributing diagnostic plots.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for local checks and documentation builds.

@@ -8,21 +8,17 @@ Use Python 3.11 or newer. From the repository root:
 
 .. code-block:: bash
 
-   pip install -e ".[dev,docs,viz]"
+   pip install -e .
 
 For a CUDA 13 installation, add the ``gpu`` extra. GPU installation is optional;
-all package functions and small tests can run on CPU.
+training and inference also run on CPU.
 
 .. code-block:: bash
 
-   pip install -e ".[gpu,dev,docs,viz]"
-   CUDA_VISIBLE_DEVICES=1 XLA_PYTHON_CLIENT_PREALLOCATE=false \
-       python experiments/coop_grid_td/run.py train --profile smoke
+   pip install -e ".[gpu]"
 
-The visible device is renumbered inside the process: physical GPU 1 appears as
-JAX device 0. The library does not set device visibility or allocator settings.
-Set them before starting Python. To use conda, create an environment from
-``environment.yml``, then install the package with pip.
+To use conda, create an environment from ``environment.yml``, then install
+the package with pip. See :doc:`inventory` for optional installation extras.
 
 A small run
 -----------
@@ -50,18 +46,3 @@ A small run
 This example uses 64,000 world transitions. For a longer training run, use the
 ``demo`` profile in :doc:`experiments`, which also saves configuration,
 checkpoints, policies, and evaluation results.
-
-Documentation and checks
-------------------------
-
-.. code-block:: bash
-
-   JAX_PLATFORMS=cpu python -m pytest -q
-   JAX_PLATFORMS=cpu sphinx-build -W --keep-going -b html docs/source docs/build/html
-   python -m http.server 8001 --directory docs/build/html
-
-Documentation uses reStructuredText, Sphinx autodoc, and the PyData Sphinx
-theme with light mode as the default. Notebook outputs are saved in the
-repository and rendered without executing training. GitHub Actions builds
-documentation and publishes successful builds from ``main``. Run tests and
-documentation checks locally before pushing.

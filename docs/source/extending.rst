@@ -34,8 +34,8 @@ Add a model
 
 ``Model.init(key, input_spec, output_spec)`` initializes one parameter slot.
 ``apply(variables, inputs, carry, key)`` returns outputs and carry. ``QTable``
-implements a finite observation/action lookup. The agent stacks parameter slots and applies the model
-per animal. Custom representations can satisfy the model protocol, but the
+implements a finite observation/action lookup. The agent stacks parameter slots
+and applies the model per animal. Custom representations can satisfy the model protocol, but the
 implemented TD methods update table entries directly and require QTable-shaped
 variables. A neural model requires a corresponding gradient-based learning
 method; implementing ``Model`` alone does not make it compatible with these TD
