@@ -1,13 +1,13 @@
 {
-  "collection": "Contour",
-  "version": 1,
+  "collection": "Vector / 84",
+  "version": 2,
   "assets": [
     {
       "id": "orbit",
       "name": "Orbit mouse",
       "category": "Mice",
       "file": "animals/mice/orbit.svg",
-      "description": "A rounded top-view mouse with cupped ears, tapered snout, engraved flank lines and a curled tail.",
+      "description": "Minimal angular mouse seen from above. Pointed nose faces north, polygonal ears sit behind the head, and a bent tail trails south.",
       "viewBox": [
         0,
         0,
@@ -25,7 +25,7 @@
       "name": "Dart mouse",
       "category": "Mice",
       "file": "animals/mice/dart.svg",
-      "description": "A slender top-view mouse with small swept ears, a long nose and a looped tail.",
+      "description": "Minimal angular mouse seen from above. Pointed nose faces north, polygonal ears sit behind the head, and a bent tail trails south.",
       "viewBox": [
         0,
         0,
@@ -43,7 +43,7 @@
       "name": "Halo mouse",
       "category": "Mice",
       "file": "animals/mice/halo.svg",
-      "description": "A compact top-view mouse with oversized sculpted ears, a pointed muzzle and a coiled tail.",
+      "description": "Minimal angular mouse seen from above. Pointed nose faces north, polygonal ears sit behind the head, and a bent tail trails south.",
       "viewBox": [
         0,
         0,
@@ -61,7 +61,7 @@
       "name": "Capuchin",
       "category": "Monkeys",
       "file": "animals/monkeys/capuchin.svg",
-      "description": "A seated capuchin token with a heart-shaped facial mask, grasping hands and a curling tail; facing north.",
+      "description": "Minimal overhead monkey: forward muzzle, small lateral ears, four angular limbs and a trailing prehensile tail. No front-facing face.",
       "viewBox": [
         0,
         0,
@@ -79,7 +79,7 @@
       "name": "Macaque",
       "category": "Monkeys",
       "file": "animals/monkeys/macaque.svg",
-      "description": "A broad-headed macaque with wide ear bowls, a sculpted face mask and articulated hands; facing north.",
+      "description": "Minimal overhead monkey: forward muzzle, small lateral ears, four angular limbs and a trailing prehensile tail. No front-facing face.",
       "viewBox": [
         0,
         0,
@@ -97,7 +97,7 @@
       "name": "Elephant",
       "category": "Animals",
       "file": "animals/elephant.svg",
-      "description": "An overhead elephant with fan-shaped ears, engraved skin contours, tusks and a north-facing trunk.",
+      "description": "Elephant viewed directly from above: broad ear fans, a short head, a forward trunk and four side feet around a long back. The trunk extends north.",
       "viewBox": [
         0,
         0,
@@ -115,7 +115,7 @@
       "name": "Fox",
       "category": "Animals",
       "file": "animals/fox.svg",
-      "description": "A pointed-eared fox with angular cheek contours and a curled brush tail, seen from above.",
+      "description": "Angular fox seen from above with swept triangular ears, a tapered muzzle and a broad brush tail.",
       "viewBox": [
         0,
         0,
@@ -133,7 +133,7 @@
       "name": "Touring coupe",
       "category": "Vehicles",
       "file": "vehicles/coupe.svg",
-      "description": "A top-down touring coupe with a tapered bonnet, panoramic glass and fine coachwork lines.",
+      "description": "Minimal overhead coupe with a polygonal chassis, two windows, four tyres and paired accent headlights. Bonnet faces north.",
       "viewBox": [
         0,
         0,
@@ -151,7 +151,7 @@
       "name": "Field rover",
       "category": "Vehicles",
       "file": "vehicles/rover.svg",
-      "description": "A top-down field rover with a square chassis, roof ribs and a panoramic windscreen.",
+      "description": "Minimal overhead rover with a polygonal chassis, two windows, four tyres and paired accent headlights. Bonnet faces north.",
       "viewBox": [
         0,
         0,

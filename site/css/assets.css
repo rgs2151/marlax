@@ -51,7 +51,7 @@ figcaption { padding: 16px 12px 0; display: flex; flex-wrap: wrap; justify-conte
 figcaption a { font-size: 16px; }
 footer { background: var(--ink); color: var(--paper); padding: 40px; display: flex; flex-wrap: wrap; gap: 24px 40px; margin-bottom: 16px; }
 footer p { font-size: clamp(32px, 3.3vw, 48px); line-height: 1.1; letter-spacing: -.04em; width: 100%; }
-body[data-surface="dark"] .artwork { --ink: #e3f0f3; --paper: #142c37; --accent: #71d9d0; --glass: #264651; --tile: #264651; --stage: #142c37; }
+body[data-surface="dark"] .artwork { --ink: #a9e7ee; --paper: #0e202e; --accent: #f56d9e; --glass: #264651; --tile: #264651; --stage: #0e202e; }
 @media (max-width: 900px) {
   .hero-art { min-height: 430px; }
   .intro-copy { padding: 28px; }
@@ -79,3 +79,8 @@ body[data-surface="dark"] .artwork { --ink: #e3f0f3; --paper: #142c37; --accent:
   figcaption { flex-direction: row; }
   footer { padding: 28px; }
 }
+
+.board-preview { display: grid; grid-template-columns: 1fr 1.4fr; gap: 32px; align-items: center; padding: 24px 16px 48px; }
+.board-preview p { margin: 20px 0; max-width: 360px; }
+.board-preview img { display: block; width: 100%; height: auto; }
+@media (max-width: 580px) { .board-preview { grid-template-columns: 1fr; padding: 16px 10px 32px; } }
