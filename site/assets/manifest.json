@@ -254,5 +254,21 @@
       ],
       "facing": "north"
     }
+  ],
+  "palette": {
+    "line": "#ffffff",
+    "background": "#000000",
+    "accent": "#8b0000"
+  },
+  "collections": [
+    {
+      "name": "Vector / 84",
+      "manifest": "collections/vector-84/manifest.json",
+      "note": "Preserved source SVGs."
+    },
+    {
+      "name": "Vector / 88",
+      "manifest": "collections/vector-88/manifest.json"
+    }
   ]
 }

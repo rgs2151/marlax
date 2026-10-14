@@ -1,0 +1,167 @@
+{
+  "collection": "Vector / 88",
+  "assets": [
+    {
+      "id": "orbit",
+      "name": "Orbit mouse",
+      "category": "Mice",
+      "file": "collections/vector-88/animals/mice/orbit.svg",
+      "description": "Minimal angular mouse seen from above. Pointed nose faces north, polygonal ears sit behind the head, and a bent tail trails south.",
+      "viewBox": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "anchor": [
+        128.0,
+        128.0
+      ],
+      "facing": "north"
+    },
+    {
+      "id": "dart",
+      "name": "Dart mouse",
+      "category": "Mice",
+      "file": "collections/vector-88/animals/mice/dart.svg",
+      "description": "Minimal angular mouse seen from above. Pointed nose faces north, polygonal ears sit behind the head, and a bent tail trails south.",
+      "viewBox": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "anchor": [
+        128.0,
+        128.0
+      ],
+      "facing": "north"
+    },
+    {
+      "id": "halo",
+      "name": "Halo mouse",
+      "category": "Mice",
+      "file": "collections/vector-88/animals/mice/halo.svg",
+      "description": "Minimal angular mouse seen from above. Pointed nose faces north, polygonal ears sit behind the head, and a bent tail trails south.",
+      "viewBox": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "anchor": [
+        128.0,
+        128.0
+      ],
+      "facing": "north"
+    },
+    {
+      "id": "capuchin",
+      "name": "Capuchin",
+      "category": "Monkeys",
+      "file": "collections/vector-88/animals/monkeys/capuchin.svg",
+      "description": "Minimal overhead monkey: forward muzzle, small lateral ears, four angular limbs and a trailing prehensile tail. No front-facing face.",
+      "viewBox": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "anchor": [
+        128.0,
+        128.0
+      ],
+      "facing": "north"
+    },
+    {
+      "id": "macaque",
+      "name": "Macaque",
+      "category": "Monkeys",
+      "file": "collections/vector-88/animals/monkeys/macaque.svg",
+      "description": "Minimal overhead monkey: forward muzzle, small lateral ears, four angular limbs and a trailing prehensile tail. No front-facing face.",
+      "viewBox": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "anchor": [
+        128.0,
+        128.0
+      ],
+      "facing": "north"
+    },
+    {
+      "id": "elephant",
+      "name": "Elephant",
+      "category": "Animals",
+      "file": "collections/vector-88/animals/elephant.svg",
+      "description": "Elephant viewed directly from above: broad ear fans, a short head, a forward trunk and four side feet around a long back. The trunk extends north.",
+      "viewBox": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "anchor": [
+        128.0,
+        128.0
+      ],
+      "facing": "north"
+    },
+    {
+      "id": "fox",
+      "name": "Fox",
+      "category": "Animals",
+      "file": "collections/vector-88/animals/fox.svg",
+      "description": "Angular fox seen from above with swept triangular ears, a tapered muzzle and a broad brush tail.",
+      "viewBox": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "anchor": [
+        128.0,
+        128.0
+      ],
+      "facing": "north"
+    },
+    {
+      "id": "coupe",
+      "name": "Touring coupe",
+      "category": "Vehicles",
+      "file": "collections/vector-88/vehicles/coupe.svg",
+      "description": "Minimal overhead coupe with a polygonal chassis, two windows, four tyres and paired accent headlights. Bonnet faces north.",
+      "viewBox": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "anchor": [
+        128.0,
+        128.0
+      ],
+      "facing": "north"
+    },
+    {
+      "id": "rover",
+      "name": "Field rover",
+      "category": "Vehicles",
+      "file": "collections/vector-88/vehicles/rover.svg",
+      "description": "Minimal overhead rover with a polygonal chassis, two windows, four tyres and paired accent headlights. Bonnet faces north.",
+      "viewBox": [
+        0,
+        0,
+        256,
+        256
+      ],
+      "anchor": [
+        128.0,
+        128.0
+      ],
+      "facing": "north"
+    }
+  ]
+}

@@ -1,10 +1,15 @@
-const surfaceToggle = document.getElementById("surface-toggle");
-surfaceToggle.hidden = false;
-surfaceToggle.setAttribute("aria-pressed", "true");
-surfaceToggle.textContent = "Preview on white";
-surfaceToggle.addEventListener("click", () => {
-  const dark = surfaceToggle.getAttribute("aria-pressed") !== "true";
-  document.body.dataset.surface = dark ? "dark" : "light";
-  surfaceToggle.setAttribute("aria-pressed", String(dark));
-  surfaceToggle.textContent = dark ? "Preview on white" : "Preview on dark";
-});
+const editionButtons = document.querySelectorAll("[data-edition]");
+const collectionName = document.getElementById("collection-name");
+
+for (const button of editionButtons) {
+  button.addEventListener("click", () => {
+    const edition = button.dataset.edition;
+    for (const item of document.querySelectorAll("[data-v84]")) {
+      item.setAttribute(item.tagName === "IMG" ? "src" : "href", item.dataset[`v${edition}`]);
+    }
+    for (const choice of editionButtons) {
+      choice.setAttribute("aria-pressed", String(choice === button));
+    }
+    collectionName.textContent = `Vector / ${edition}`;
+  });
+}

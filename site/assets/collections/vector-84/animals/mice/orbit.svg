@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+<title id="title">Orbit mouse</title><desc id="desc">Minimal angular mouse seen from above. Pointed nose faces north, polygonal ears sit behind the head, and a bent tail trails south.</desc>
+<g fill="none" stroke="var(--ink, #163746)" stroke-width="4" stroke-linecap="square" stroke-linejoin="miter"><path d="M128 186 V209 H172 V231 H152"/><polygon points="103,99 88,130 88,165 108,186 148,186 168,165 168,130 153,99" fill="var(--paper, #ffffff)"/><polygon points="79,67 99,67 111,80 111,99 97,111 77,106 65,89" fill="var(--paper, #ffffff)"/><g transform="translate(256 0) scale(-1 1)"><polygon points="79,67 99,67 111,80 111,99 97,111 77,106 65,89" fill="var(--paper, #ffffff)"/></g><polygon points="128,42 153,77 153,101 128,120 103,101 103,77" fill="var(--paper, #ffffff)"/><path d="M116 93 H140" stroke="var(--accent, #bd2863)"/></g>
+</svg>

@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+<svg style="background:#000000" xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
 <title id="title">Meeting point</title>
 <desc id="desc">An octagonal meeting-point marker with paired directional chevrons.</desc>
-<g fill="none" stroke="var(--ink, #162e3b)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M92 71 H164 L185 92 V164 L164 185 H92 L71 164 V92 Z" /><path d="M99 83 H157 L173 99 V157 L157 173 H99 L83 157 V99 Z" stroke-width=".8"/><path d="M109 112 L128 93 L147 112 M109 144 L128 163 L147 144" stroke="var(--accent, #087e86)" stroke-width="2"/><circle cx="128" cy="128" r="9" stroke-width="1"/></g>
+<g fill="none" stroke="var(--ink, #ffffff)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M92 71 H164 L185 92 V164 L164 185 H92 L71 164 V92 Z" /><path d="M99 83 H157 L173 99 V157 L157 173 H99 L83 157 V99 Z" stroke-width=".8"/><path d="M109 112 L128 93 L147 112 M109 144 L128 163 L147 144" stroke="var(--accent, #8b0000)" stroke-width="2"/><circle cx="128" cy="128" r="9" stroke-width="1"/></g>
 </svg>
