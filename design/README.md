@@ -24,7 +24,9 @@ this structure. Additional methods and environments should exercise the boundari
 before the project grows a larger framework.
 
 The current two-to-three-demo scope and JavaScript audit are in
-[Interactive simulation gallery](simulation-gallery.md).
+[Interactive simulation gallery](simulation-gallery.md). The detailed
+[JavaScript redesign audit](javascript-redesign.md) defines the runtime boundaries,
+interaction ordering and environment-specific requirements for implementation.
 
 ## Read in this order
 

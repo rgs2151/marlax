@@ -4,6 +4,9 @@ Design and local JavaScript audit, 14 October 2026. No runtime or environment
 implementation is included in this change. This document narrows the earlier
 [browser handoff](browser-handoff.md) proposal to two or three interactive demos.
 The Python package and public documentation stay unchanged.
+The follow-up [JavaScript redesign audit](javascript-redesign.md) specifies the
+interfaces, tick ordering, geometry and handoff in more detail and takes precedence
+where it refines this initial sketch.
 
 ## Current condition
 
@@ -72,26 +75,29 @@ site/js/
     grid.js            exact cooperative-grid transition
     docking.js         proposed second environment
     orbit.js           optional third environment
+  views/               per-demo layout, placement and interpolation
 ```
 
 Use explicit imports and a short array of demo definitions. No plugin discovery
 or general-purpose environment framework. Each environment supplies `reset`,
-`observe`, `step`, and `place`; its drawing layout can remain environment-specific.
+`observe` and `step`. A separate demo view supplies placement, scene layout and
+interpolation.
 
 Proposed call boundary:
 
 ```javascript
 state = environment.reset(scenario);
-state = environment.place(state, agentId, worldPoint);
+state = view.place(state, agentId, worldPoint);
 const observations = environment.observe(state);
 const actions = policy.act(observations);
-const result = environment.step(state, actions, heldAgentId);
+actions[agentId] = stayAction; // session holds the placed agent for this tick
+const result = environment.step(state, actions);
 state = result.state;
-renderer.draw(previousState, state, interpolation, selection);
+renderer.draw(view.scene(previousState, state, interpolation), selection);
 ```
 
-`step` returns `{state, reward, terminated, truncated}`. The timestep belongs to
-the environment configuration, not the display frame. With no held agent,
+`step` returns `{state, reward, terminated, truncated, events}` with per-agent
+rewards. The timestep belongs to the environment configuration, not the display frame. With no held agent,
 transitions must match Python exactly. A held agent is an explicit interactive
 intervention: its move is suppressed while task rules and the other agent continue.
 Compute every policy action from the same pre-step state.
@@ -112,8 +118,8 @@ wall-clock baseline on return, without running a hidden-page backlog.
   pointer velocity. Grid co-location remains legal, as required by the task.
 - Keep target identity, activation phase and episode step count. Dragging changes
   position, not the task. Normal success/failure rules still apply.
-- If a terminal event occurs during dragging, finish the gesture before advancing
-  the scenario. Freeze the completed episode during that short interval.
+- If a terminal event occurs during dragging, freeze task positions and stop
+  accepting placements; wait for release/cancel before advancing the scenario.
 - Track one captured pointer. Release and cancellation both end the hold. Repeated
   selection at an overlap cycles pieces, starting with the visually topmost one.
 - Provide Pause/Play and Reset. Paused placement remains paused. Provide a simple
@@ -154,8 +160,10 @@ without obstacles, inertia or steering mechanics.
 - Quantize each agent's goal displacement into 9 × 9 bins and the other agent's
   relative position into 5 × 5 bins: 2,025 observations per agent. This permits the
   existing tabular model and learning methods with continuous world positions.
-- Dragging clamps to the arena and excludes the other body; show the nearest valid
-  placement. Two goal labels distinguish assignments without extra colours.
+- Dragging clamps to the arena and excludes the other body; show the valid
+  placement. Reject overlapping placements and keep the last valid position,
+  rather than solving for the nearest feasible point. Two goal labels distinguish
+  assignments without extra colours.
 
 This requires a new environment and newly trained policy, not reuse of the grid
 weights. Quantization aliases states; validate recovery after relocation before

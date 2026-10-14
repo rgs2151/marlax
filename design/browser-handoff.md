@@ -1,5 +1,10 @@
 # Frozen policies and the JavaScript library
 
+For the current two-to-three-demo gallery, the
+[JavaScript redesign audit](javascript-redesign.md) takes precedence over this
+earlier, broader proposal. In particular, use inference-only bundles, live dragging
+with a one-tick hold on release, and a small demo selector without method controls.
+
 ## Boundary
 
 Python owns learning and reference evaluation. JavaScript owns browser inference,
