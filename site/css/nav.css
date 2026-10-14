@@ -8,8 +8,8 @@
   justify-content: space-between;
   gap: 24px;
   padding: 0 32px;
-  background: #000000;
-  color: #ffffff;
+  background: #ffffff;
+  color: #000000;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;
 }
@@ -19,8 +19,8 @@
 .site-header a[aria-current="page"] { text-decoration: underline; text-underline-offset: 6px; }
 .site-header a:hover { color: #8b0000; }
 a:focus-visible, button:focus-visible { outline: 3px solid #8b0000; outline-offset: 5px; }
-.simulation .site-header { background: #000000; color: #ffffff; }
-.simulation .site-header a:hover { color: #ffffff; }
+.simulation .site-header { background: #ffffff; color: #000000; }
+.simulation .site-header a:hover { color: #000000; }
 @media (max-width: 520px) {
   .site-header { height: 112px; align-items: flex-start; flex-direction: column; justify-content: center; gap: 4px; padding: 10px 20px; }
   .site-header nav { width: 100%; justify-content: space-between; gap: 14px; }

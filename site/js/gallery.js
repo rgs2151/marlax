@@ -2,6 +2,19 @@ const canvas = document.getElementById("world-canvas");
 const ctx = canvas.getContext("2d");
 const response = await fetch("./data/coop_grid_q_learning.json");
 const data = await response.json();
+const artwork = await Promise.all([
+  "boards/circuit.svg",
+  "markers/beacon.svg",
+  "markers/portal.svg",
+  "animals/mice/orbit.svg",
+  "animals/mice/dart.svg",
+].map(async (path) => {
+  const image = new Image();
+  image.src = `./assets/${path}`;
+  await image.decode();
+  return image;
+}));
+
 
 const env = data.env;
 const q = data.policy.q;
@@ -13,8 +26,8 @@ const center = env.center;
 const scenarios = data.showcase.scenarios;
 
 const agents = [
-  makeAgent(0, "#f2f2f2"),
-  makeAgent(1, "#a9a9a9"),
+  makeAgent(0, artwork[3]),
+  makeAgent(1, artwork[4]),
 ];
 
 let board = { x: 0, y: 0, size: 1, cell: 1 };
@@ -36,10 +49,11 @@ function clamp(value, lo, hi) {
   return Math.max(lo, Math.min(hi, value));
 }
 
-function makeAgent(id, stroke) {
+function makeAgent(id, image) {
   return {
     id,
-    stroke,
+    image,
+    heading: 0,
     position: [0, 0],
     velocity: [0, 0],
     cell: [0, 0],
@@ -189,113 +203,48 @@ function nearestAgent(point) {
 }
 
 function draw() {
-  ctx.fillStyle = "#000";
+  ctx.fillStyle = "#ffffff";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   drawGrid();
   drawMarkers();
-  ctx.save();
-  ctx.beginPath();
-  ctx.rect(board.x, board.y, board.size, board.size);
-  ctx.clip();
   agents.forEach(drawMouse);
-  ctx.restore();
 }
 
 function drawGrid() {
-  ctx.save();
-  ctx.lineCap = "round";
-  ctx.strokeStyle = "#dcdcdc";
-  ctx.lineWidth = Math.max(2, board.size * 0.0032);
-  ctx.strokeRect(board.x, board.y, board.size, board.size);
+  const scale = board.size / 400;
+  ctx.drawImage(artwork[0], board.x - 56 * scale, board.y - 56 * scale, 512 * scale, 512 * scale);
+}
 
-  ctx.strokeStyle = "rgba(220, 220, 220, 0.28)";
-  ctx.lineWidth = Math.max(1, board.size * 0.0015);
-  for (let index = 1; index < size; index += 1) {
-    const p = board.x + index * board.cell;
-    ctx.beginPath();
-    ctx.moveTo(p, board.y);
-    ctx.lineTo(p, board.y + board.size);
-    ctx.stroke();
-    const q = board.y + index * board.cell;
-    ctx.beginPath();
-    ctx.moveTo(board.x, q);
-    ctx.lineTo(board.x + board.size, q);
-    ctx.stroke();
-  }
-  ctx.restore();
+function drawMarker(image, point) {
+  const [x, y] = gridToCanvas(point);
+  const extent = board.cell * 1.35;
+  ctx.drawImage(image, x - extent / 2, y - extent / 2, extent, extent);
 }
 
 function drawMarkers() {
-  ctx.save();
-  ctx.lineWidth = Math.max(2, board.size * 0.003);
-  ctx.strokeStyle = active ? "rgba(255, 255, 255, 0.38)" : "rgba(255, 255, 255, 0.72)";
-  drawSquare(center, 0.24);
-
+  drawMarker(artwork[2], center);
   if (active) {
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.72)";
-    targets[targetId].forEach((target) => {
-      drawCircle(target, 0.27);
-    });
+    targets[targetId].forEach((target) => drawMarker(artwork[1], target));
   }
-  ctx.restore();
-}
-
-function drawSquare(point, radius) {
-  const [x, y] = gridToCanvas(point);
-  const r = radius * board.cell;
-  ctx.strokeRect(x - r, y - r, r * 2, r * 2);
-}
-
-function drawCircle(point, radius) {
-  const [x, y] = gridToCanvas(point);
-  ctx.beginPath();
-  ctx.arc(x, y, radius * board.cell, 0, Math.PI * 2);
-  ctx.stroke();
 }
 
 function drawMouse(agent) {
   const [x, y] = gridToCanvas(agent.position);
   const speed = Math.hypot(agent.velocity[0], agent.velocity[1]);
-  const angle = speed > 0.02 ? Math.atan2(agent.velocity[1], agent.velocity[0]) : 0;
-  const scale = board.cell * 0.32;
-
+  if (speed > 0.02) {
+    agent.heading = Math.atan2(agent.velocity[1], agent.velocity[0]) + Math.PI / 2;
+  }
+  const extent = board.cell;
   ctx.save();
   ctx.translate(x, y);
-  ctx.rotate(angle);
-  ctx.strokeStyle = agent.stroke;
-  ctx.lineWidth = Math.max(2, board.size * 0.0038);
-  ctx.lineCap = "round";
-  ctx.lineJoin = "round";
-
-  ctx.beginPath();
-  ctx.ellipse(0, 0, scale * 0.72, scale * 1.06, Math.PI / 2, 0, Math.PI * 2);
-  ctx.stroke();
-
-  ctx.beginPath();
-  ctx.arc(scale * 0.72, 0, scale * 0.47, 0, Math.PI * 2);
-  ctx.stroke();
-
-  ctx.beginPath();
-  ctx.arc(scale * 0.8, -scale * 0.34, scale * 0.24, 0, Math.PI * 2);
-  ctx.stroke();
-
-  ctx.beginPath();
-  ctx.arc(scale * 0.8, scale * 0.34, scale * 0.24, 0, Math.PI * 2);
-  ctx.stroke();
-
-  ctx.beginPath();
-  ctx.arc(scale * 1.04, -scale * 0.15, scale * 0.045, 0, Math.PI * 2);
-  ctx.stroke();
-
-  ctx.beginPath();
-  ctx.arc(scale * 1.04, scale * 0.15, scale * 0.045, 0, Math.PI * 2);
-  ctx.stroke();
-
-  ctx.beginPath();
-  ctx.moveTo(-scale * 0.68, 0);
-  ctx.lineTo(-scale * 1.58, 0);
-  ctx.stroke();
-
+  if (draggedAgent === agent) {
+    ctx.strokeStyle = "#8b0000";
+    ctx.lineWidth = Math.max(2, board.cell * 0.025);
+    const radius = board.cell * 0.38;
+    ctx.strokeRect(-radius, -radius, radius * 2, radius * 2);
+  }
+  ctx.rotate(agent.heading);
+  ctx.drawImage(agent.image, -extent / 2, -extent / 2, extent, extent);
   ctx.restore();
 }
 
@@ -335,7 +284,7 @@ function resize() {
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
   canvas.width = Math.max(1, Math.floor(rect.width * dpr));
   canvas.height = Math.max(1, Math.floor(rect.height * dpr));
-  const margin = Math.min(canvas.width, canvas.height) * 0.055;
+  const margin = Math.min(canvas.width, canvas.height) * 0.12;
   const boardSize = Math.min(canvas.width, canvas.height) - margin * 2;
   board = {
     x: (canvas.width - boardSize) / 2,

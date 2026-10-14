@@ -1,5 +1,9 @@
 # MARLAX design
 
+The approved visual direction is documented in [Aesthetics](aesthetics.md).
+It supersedes earlier artwork proposals; the architecture notes below retain
+their own scope.
+
 Status: proposed architecture, 2026-10-14. These documents describe future APIs;
 the snippets are specifications, not APIs already available in the package.
 

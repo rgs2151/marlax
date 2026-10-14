@@ -1,5 +1,5 @@
-<svg style="background:#000000" xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
 <title id="title">Target beacon</title>
 <desc id="desc">A concentric target marker with a four-point centre.</desc>
-<g fill="none" stroke="var(--ink, #ffffff)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="128" cy="128" r="58" /><circle cx="128" cy="128" r="46" stroke-width=".8"/><path d="M128 88 L168 128 L128 168 L88 128 Z" stroke="var(--accent, #8b0000)" stroke-width="1.4"/><circle cx="128" cy="128" r="13" stroke-width="1.2"/><path d="M128 61 V76 M128 180 V195 M61 128 H76 M180 128 H195" stroke-width="1.3"/></g>
+<g fill="none" stroke="var(--ink, #8b0000)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="128" cy="128" r="58" /><circle cx="128" cy="128" r="46" stroke-width=".8"/><path d="M128 88 L168 128 L128 168 L88 128 Z" stroke="var(--accent, #8b0000)" stroke-width="1.4"/><circle cx="128" cy="128" r="13" stroke-width="1.2"/><path d="M128 61 V76 M128 180 V195 M61 128 H76 M180 128 H195" stroke-width="1.3"/></g>
 </svg>

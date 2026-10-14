@@ -256,8 +256,8 @@
     }
   ],
   "palette": {
-    "line": "#ffffff",
-    "background": "#000000",
+    "line": "#000000",
+    "background": "#ffffff",
     "accent": "#8b0000"
   },
   "collections": [
@@ -270,5 +270,15 @@
       "name": "Vector / 88",
       "manifest": "collections/vector-88/manifest.json"
     }
-  ]
+  ],
+  "status": "approved",
+  "scene": {
+    "board": "boards/circuit.svg",
+    "target": "markers/beacon.svg",
+    "meeting": "markers/portal.svg",
+    "agents": [
+      "animals/mice/orbit.svg",
+      "animals/mice/dart.svg"
+    ]
+  }
 }
