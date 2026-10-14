@@ -1,0 +1,214 @@
+{
+  "date": "2026-10-14",
+  "device": "physical GPU 1, NVIDIA GeForce RTX 5090",
+  "scope": "Single-seed migration checks; not an algorithm benchmark.",
+  "runs": [
+    {
+      "method": "q_learning",
+      "config": {
+        "experiment": {
+          "env": {
+            "size": 5,
+            "num_agents": 2
+          },
+          "params": {
+            "time_limit": 48,
+            "target_reward": 1.0,
+            "activation_reward": 0.2,
+            "step_reward": -0.01,
+            "wrong_target_reward": -1.0,
+            "split_target_reward": -0.4
+          },
+          "model": {
+            "initial_value": 0.0
+          },
+          "sharing": "independent",
+          "method": "q_learning",
+          "learning": {
+            "alpha": 0.03,
+            "gamma": 0.97,
+            "epsilon_start": 1.0,
+            "epsilon_end": 0.02,
+            "epsilon_steps": 12288000
+          }
+        },
+        "environment_spec": {
+          "num_agents": 2,
+          "num_observations": 4375,
+          "num_actions": 5,
+          "observation_schema": "coop_grid_joint_index_v1"
+        },
+        "agent": {
+          "model": {
+            "initial_value": 0.0
+          },
+          "sharing": "independent"
+        },
+        "method": {
+          "name": "QLearning",
+          "alpha": 0.03,
+          "gamma": 0.97,
+          "epsilon_start": 1.0,
+          "epsilon_end": 0.02,
+          "epsilon_steps": 12288000
+        },
+        "seed": 0,
+        "num_envs": 2048,
+        "requested_additional_env_steps": 12288000,
+        "chunk_steps": 1000,
+        "initial_env_steps": 0
+      },
+      "evaluation": {
+        "cases": 3750,
+        "mean_return": 1.1501599550247192,
+        "mean_episode_steps": 4.984,
+        "termination_rate": 1.0,
+        "truncation_rate": 0.0,
+        "unfinished_rate": 0.0,
+        "collected_rate": 1.0,
+        "activated_rate": 1.0,
+        "wrong_target_rate": 0.0,
+        "elapsed_train_and_eval_seconds": 6.069497670978308,
+        "policy_sha256": "f719e6aa2f2f7207232a2dbe691437d860413636988022f834b329d802629ac4"
+      }
+    },
+    {
+      "method": "sarsa",
+      "config": {
+        "experiment": {
+          "env": {
+            "size": 5,
+            "num_agents": 2
+          },
+          "params": {
+            "time_limit": 48,
+            "target_reward": 1.0,
+            "activation_reward": 0.2,
+            "step_reward": -0.01,
+            "wrong_target_reward": -1.0,
+            "split_target_reward": -0.4
+          },
+          "model": {
+            "initial_value": 0.0
+          },
+          "sharing": "independent",
+          "method": "sarsa",
+          "learning": {
+            "alpha": 0.03,
+            "gamma": 0.97,
+            "epsilon_start": 1.0,
+            "epsilon_end": 0.02,
+            "epsilon_steps": 12288000
+          }
+        },
+        "environment_spec": {
+          "num_agents": 2,
+          "num_observations": 4375,
+          "num_actions": 5,
+          "observation_schema": "coop_grid_joint_index_v1"
+        },
+        "agent": {
+          "model": {
+            "initial_value": 0.0
+          },
+          "sharing": "independent"
+        },
+        "method": {
+          "name": "SARSA",
+          "alpha": 0.03,
+          "gamma": 0.97,
+          "epsilon_start": 1.0,
+          "epsilon_end": 0.02,
+          "epsilon_steps": 12288000
+        },
+        "seed": 0,
+        "num_envs": 2048,
+        "requested_additional_env_steps": 12288000,
+        "chunk_steps": 1000,
+        "initial_env_steps": 0
+      },
+      "evaluation": {
+        "cases": 3750,
+        "mean_return": 1.1501599550247192,
+        "mean_episode_steps": 4.984,
+        "termination_rate": 1.0,
+        "truncation_rate": 0.0,
+        "unfinished_rate": 0.0,
+        "collected_rate": 1.0,
+        "activated_rate": 1.0,
+        "wrong_target_rate": 0.0,
+        "policy_sha256": "676f320dc5f5144b61e12db900cba050355f430cb61458aa39bfe9994fa46000",
+        "elapsed_train_and_eval_seconds": 6.4758257530629635
+      }
+    },
+    {
+      "method": "expected_sarsa",
+      "config": {
+        "experiment": {
+          "env": {
+            "size": 5,
+            "num_agents": 2
+          },
+          "params": {
+            "time_limit": 48,
+            "target_reward": 1.0,
+            "activation_reward": 0.2,
+            "step_reward": -0.01,
+            "wrong_target_reward": -1.0,
+            "split_target_reward": -0.4
+          },
+          "model": {
+            "initial_value": 0.0
+          },
+          "sharing": "independent",
+          "method": "expected_sarsa",
+          "learning": {
+            "alpha": 0.03,
+            "gamma": 0.97,
+            "epsilon_start": 1.0,
+            "epsilon_end": 0.02,
+            "epsilon_steps": 12288000
+          }
+        },
+        "environment_spec": {
+          "num_agents": 2,
+          "num_observations": 4375,
+          "num_actions": 5,
+          "observation_schema": "coop_grid_joint_index_v1"
+        },
+        "agent": {
+          "model": {
+            "initial_value": 0.0
+          },
+          "sharing": "independent"
+        },
+        "method": {
+          "name": "ExpectedSARSA",
+          "alpha": 0.03,
+          "gamma": 0.97,
+          "epsilon_start": 1.0,
+          "epsilon_end": 0.02,
+          "epsilon_steps": 12288000
+        },
+        "seed": 0,
+        "num_envs": 2048,
+        "requested_additional_env_steps": 12288000,
+        "chunk_steps": 1000,
+        "initial_env_steps": 0
+      },
+      "evaluation": {
+        "cases": 3750,
+        "mean_return": 1.1501599550247192,
+        "mean_episode_steps": 4.984,
+        "termination_rate": 1.0,
+        "truncation_rate": 0.0,
+        "unfinished_rate": 0.0,
+        "activated_rate": 1.0,
+        "collected_rate": 1.0,
+        "wrong_target_rate": 0.0,
+        "policy_sha256": "bf423eb8179d841aa131dece687c0899cffc3093da8c118a39684010e96499dc",
+        "elapsed_train_and_eval_seconds": 5.978107244241983
+      }
+    }
+  ]
+}

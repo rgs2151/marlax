@@ -1,0 +1,10 @@
+project = "MARLAX"
+author = "MARLAX contributors"
+release = "0.1.0"
+extensions = ["sphinx.ext.autodoc", "sphinx.ext.viewcode", "myst_nb"]
+html_theme = "alabaster"
+autodoc_member_order = "bysource"
+autodoc_typehints = "none"
+exclude_patterns = ["**/.ipynb_checkpoints/**"]
+nb_execution_mode = "off"
+myst_title_to_header = True

@@ -1,65 +1,45 @@
 import jax
 import jax.numpy as jnp
+import numpy as np
 
-from marlax.envs import CooperativeGridWorld, GridState
-
-
-def test_reset_shapes_and_state_ids():
-    env = CooperativeGridWorld(size=5, num_agents=2, num_envs=8)
-    state = env.reset(jax.random.key(0))
-
-    assert state.positions.shape == (8, 2, 2)
-    assert state.target.shape == (8,)
-    assert state.active.shape == (8,)
-    assert state.steps.shape == (8,)
-    assert jnp.all(env.state_id(state) < env.num_states)
+import marlax as mx
+from marlax.envs import CooperativeGrid, GridState
+from marlax.models import QTable
 
 
-def test_collecting_active_target_finishes_episode():
-    env = CooperativeGridWorld(size=5, num_agents=2, num_envs=1, step_reward=0.0)
-    target_cell = env.targets[0, 0]
-    state = GridState(
-        positions=jnp.array([[target_cell, target_cell]], dtype=jnp.int32),
-        target=jnp.array([0], dtype=jnp.int32),
-        active=jnp.array([True]),
-        steps=jnp.array([3], dtype=jnp.int32),
-    )
-
-    step = env.step(state, jnp.array([[0, 0]], dtype=jnp.int32), jax.random.key(1))
-
-    assert bool(step.collected[0])
-    assert bool(step.done[0])
-    assert float(step.rewards[0, 0]) == 1.0
-
-
-def test_activation_requires_all_agents_at_center():
-    env = CooperativeGridWorld(size=5, num_agents=2, num_envs=1, step_reward=0.0)
-    center = env.center
-    state = GridState(
-        positions=jnp.array([[[center[0], center[1]], [0, 0]]], dtype=jnp.int32),
-        target=jnp.array([0], dtype=jnp.int32),
-        active=jnp.array([False]),
-        steps=jnp.array([0], dtype=jnp.int32),
-    )
-
-    step = env.step(state, jnp.array([[0, 0]], dtype=jnp.int32), jax.random.key(2))
-
-    assert not bool(step.activated[0])
-    assert not bool(step.state.active[0])
+def test_grid_activation_collection_and_raw_terminal_state():
+    env = CooperativeGrid()
+    params = env.default_params()
+    state = GridState(jnp.array([[2, 2], [2, 1]]), jnp.array(0), jnp.array(False), jnp.array(0))
+    _, before = env.step(jax.random.PRNGKey(0), state, jnp.array([0, 0]), params)
+    assert not before.metrics["activated"]
+    state, activated = env.step(jax.random.PRNGKey(0), state, jnp.array([0, 2]), params)
+    assert activated.metrics["activated"]
+    assert jnp.isclose(activated.reward[0], 0.19)
+    state, _ = env.step(jax.random.PRNGKey(0), state, jnp.array([2, 2]), params)
+    state, collected = env.step(jax.random.PRNGKey(0), state, jnp.array([2, 2]), params)
+    assert collected.terminated
+    assert jnp.array_equal(state.positions, jnp.array([[2, 4], [2, 4]]))
+    assert state.active
 
 
-def test_activation_rewards_joint_center():
-    env = CooperativeGridWorld(size=5, num_agents=2, num_envs=1, step_reward=0.0)
-    center = env.center
-    state = GridState(
-        positions=jnp.array([[center, center]], dtype=jnp.int32),
-        target=jnp.array([0], dtype=jnp.int32),
-        active=jnp.array([False]),
-        steps=jnp.array([0], dtype=jnp.int32),
-    )
+def test_wrong_split_and_timeout_are_distinct():
+    env = CooperativeGrid()
+    params = env.default_params()._replace(time_limit=1)
+    state = GridState(jnp.array([[2, 4], [4, 2]]), jnp.array(0), jnp.array(True), jnp.array(0))
+    _, step = env.step(jax.random.PRNGKey(0), state, jnp.array([0, 0]), params)
+    assert step.truncated and not step.terminated
+    assert jnp.isclose(step.reward[0], -0.41)
+    state = state._replace(positions=jnp.array([[2, 0], [4, 2]]))
+    _, step = env.step(jax.random.PRNGKey(0), state, jnp.array([0, 0]), params)
+    assert step.terminated and step.metrics["wrong_target"]
 
-    step = env.step(state, jnp.array([[0, 0]], dtype=jnp.int32), jax.random.key(3))
 
-    assert bool(step.activated[0])
-    assert bool(step.state.active[0])
-    assert bool(jnp.isclose(step.rewards[0, 0], 0.15))
+def test_saved_policy_on_all_original_start_target_cases():
+    env = CooperativeGrid()
+    with np.load("stores/coop_grid_q_learning/latest/q_values.npz", allow_pickle=False) as saved:
+        policy = mx.FrozenPolicy(mx.Agent(QTable()), jnp.asarray(saved["q"]))
+    report = mx.evaluate(policy, env, env.default_params(), initial_states=env.all_starts())
+    assert report["cases"] == 3750
+    assert report["collected_rate"] == 1.0
+    assert np.isclose(report["mean_episode_steps"], 5.1296)

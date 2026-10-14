@@ -1,7 +1,3 @@
-from marlax.envs.coop_grid import CooperativeGridWorld, GridState, GridStep
+from .coop_grid import CooperativeGrid, GridParams, GridState
 
-__all__ = [
-    "CooperativeGridWorld",
-    "GridState",
-    "GridStep",
-]
+__all__ = ["CooperativeGrid", "GridParams", "GridState"]

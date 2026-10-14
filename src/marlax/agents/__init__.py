@@ -1,7 +1,3 @@
-from marlax.agents.q_learning import IndependentQLearning, QLearningState, TrainStats
+from .policy import Agent, FrozenPolicy, action_probabilities
 
-__all__ = [
-    "IndependentQLearning",
-    "QLearningState",
-    "TrainStats",
-]
+__all__ = ["Agent", "FrozenPolicy", "action_probabilities"]
