@@ -30,6 +30,8 @@ for name in ("index", "guide", "tutorials", "inventory", "api"):
     assert (root / f"{name}.html").is_file(), name
 
 for path in root.rglob("*.html"):
+    if "_static" in path.relative_to(root).parts:
+        continue
     parser = Links()
     parser.feed(path.read_text())
     for reference in parser.references:

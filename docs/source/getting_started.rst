@@ -60,8 +60,8 @@ Documentation and checks
    JAX_PLATFORMS=cpu sphinx-build -W --keep-going -b html docs/source docs/build/html
    python -m http.server 8001 --directory docs/build/html
 
-Documentation uses reStructuredText, Sphinx autodoc, and the standard Alabaster
-theme. GitHub Actions builds it with saved notebook outputs, checks local links,
+Documentation uses reStructuredText, Sphinx autodoc, and the PyData Sphinx
+theme with light mode as the default. GitHub Actions builds it with saved notebook outputs, checks local links,
 and publishes successful main-branch builds at ``/marlax/``. The existing
 gallery is available at ``/marlax/gallery/`` in the same Pages deployment. Pull requests build
 and validate the site but do not deploy it.
