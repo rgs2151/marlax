@@ -23,6 +23,9 @@ The first implementation should make the existing cooperative grid example fit
 this structure. Additional methods and environments should exercise the boundaries
 before the project grows a larger framework.
 
+The current two-to-three-demo scope and JavaScript audit are in
+[Interactive simulation gallery](simulation-gallery.md).
+
 ## Read in this order
 
 | Document | Decision it supports |
