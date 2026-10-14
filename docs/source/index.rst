@@ -1,15 +1,15 @@
 MARLAX
 ======
 
-MARLAX is a small JAX library for cooperative multi-agent reinforcement learning.
+MARLAX is a JAX library for cooperative multi-agent reinforcement learning.
 Define one world, compose an agent and a learning method, train across batched
 worlds, and save a frozen policy independently of training state.
 
-The current release supports tabular Q-learning, SARSA, and Expected SARSA,
-independent or shared Q-tables, and the cooperative grid environment. Neural
-models, model-based planning, and the new JavaScript export format remain planned.
+Train with Q-learning, SARSA, or Expected SARSA using independent or shared
+Q-tables. Use the cooperative grid environment or define an environment with
+finite observations and discrete actions.
 Explore the `interactive gallery <https://rgs2151.github.io/marlax/gallery/>`_
-with the original saved policy.
+to see a trained cooperative policy.
 
 .. toctree::
    :maxdepth: 2

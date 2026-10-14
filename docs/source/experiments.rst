@@ -23,10 +23,9 @@ current observations, pending behavior actions, and counters. Exploration contin
 from its original schedule rather than starting again. Resume writes a new run;
 it does not overwrite the source checkpoint.
 
-The recipe selects public package components. It contains no copy of environment
-physics or TD equations. Training and Python evaluation use the same environment
-step. Evaluation freezes behavior and excludes completed episodes from subsequent
-rewards and metrics.
+Evaluation uses greedy actions from the saved policy and the same environment
+dynamics as training. Completed episodes are excluded from subsequent rewards
+and metrics.
 
 Metrics
 -------
@@ -44,11 +43,9 @@ it is not a disjoint failure category. ``collected_rate``, ``wrong_target_rate``
 Team return averages the duplicated per-agent reward rather than summing it.
 
 The built-in exhaustive scenario set covers all 3,750 start-position/target
-combinations for the 5×5 two-agent task. It does not demonstrate generalization to
-other sizes or observation schemas. A single-seed run is a development check;
-scientific algorithm comparisons require a separate multi-seed experiment.
+combinations for the 5×5 two-agent task. Use multiple training seeds when
+comparing learning methods.
 
-The recipe never retrains when evaluating, loading, or inspecting a saved policy.
-It does not write ``site/``, ``stores/``, or the old diagnostic plots.
-The independent ``plot`` command writes a small SVG under the run's ``plots/``
-directory. It separates training reward per step from evaluation outcome fractions.
+The ``plot`` command reads saved metrics and writes an SVG under the run's
+``plots/`` directory, showing training reward per step and evaluation outcome
+fractions.

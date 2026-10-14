@@ -11,9 +11,8 @@ The public interface classes are structural protocols; inheritance is optional.
 
 Environment state, model variables, and runner state are explicit PyTrees.
 Configuration objects are immutable. No Python file writes or plotting occur
-inside JIT. All current policies are feed-forward discrete Q policies with empty
-carry ``()``. The interfaces leave room for other models, but the current online
-runner and TD methods specifically support tabular policies.
+inside JIT. The online runner and TD methods use feed-forward tabular Q policies
+with empty carry ``()``.
 
 World and timestep
 ------------------
@@ -52,8 +51,8 @@ For one world with ``A`` animals and ``U`` actions:
      - Privileged features, excluded from agent input
 
 The runner adds a leading world axis ``[B]``; scan statistics add a time axis
-``[T]``. The current profile has fixed agents with identical discrete action
-spaces. It does not support changing populations or recurrent policies.
+``[T]``. The online runner requires a fixed agent count and identical discrete action
+spaces.
 
 Cooperative grid
 ----------------
@@ -68,14 +67,11 @@ adds a penalty but does not terminate. Reward components add to the step cost.
 The observation index encodes the ordered animal positions and a target code.
 Before activation, that code is zero regardless of the hidden target. Each agent
 receives the joint index: these are shared observations, not local decentralized
-sensing. The original 5×5, two-agent encoding has 4,375 possible indices and is
-preserved for the saved Q-table.
+sensing. The 5×5, two-agent environment has 4,375 possible observation indices.
 
 Time limits are external truncations. Learning bootstraps from the final
 observation at truncation, but not after natural termination. Both flags can be
-true on the last step; termination takes precedence. This differs from the old
-trainer's treatment of every timeout as a terminal target. An intrinsic task
-horizon would require a different task definition and observable remaining time.
+true on the last step; termination takes precedence.
 
 Learning methods
 ----------------

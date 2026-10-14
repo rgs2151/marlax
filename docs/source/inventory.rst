@@ -1,9 +1,9 @@
 Available tools and APIs
 ============================
 
-This is the implemented inventory for MARLAX 0.1.0. The broader design roadmap
-is not an availability list. All current learning methods use finite-index
-observations, discrete actions, and feed-forward Q-tables.
+MARLAX provides environments, tabular learning methods, training and evaluation
+functions, and policy storage. The learning methods use finite-index observations,
+discrete actions, and feed-forward Q-tables.
 
 Environment tools
 ---------------------
@@ -52,7 +52,7 @@ Models and execution
    * - :class:`marlax.models.tabular.QTable`
      - Represent one finite observation/action table; optionally set optimistic ``initial_value``
    * - ``model.init`` / ``model.apply`` / ``model.initial_carry``
-     - Initialize, evaluate, and obtain the empty carry for the current model
+     - Initialize, evaluate, and obtain the empty carry for the Q-table model
    * - :class:`marlax.agents.policy.Agent`
      - Compose the table with independent or shared parameter routing
    * - ``agent.init`` / ``agent.slots`` / ``agent.values``
@@ -135,8 +135,7 @@ Storage
      - Inspect Python, JAX, NumPy, and visible device details used in run provenance
 
 Inference files are NPZ arrays plus JSON. Checkpoints also require the original
-configuration and matching code version. They are not a general Python object
-serializer or an automatic architecture-conversion format. See :doc:`storage`.
+configuration and matching code version. See :doc:`storage`.
 
 Contracts and data records
 ------------------------------
@@ -171,13 +170,13 @@ Repository commands and examples
    * - ``... resume``
      - Continue a checkpoint into a new run directory
    * - ``... evaluate-saved``
-     - Inspect the historical pretrained NPZ without retraining
+     - Inspect the included pretrained NPZ without retraining
    * - ``... plot``
      - Create an SVG from saved metrics, with no learning run
    * - ``examples/coordination.py``
      - Define and train a custom one-step cooperative environment
    * - ``docs/execute_notebooks.py``
-     - Deliberately refresh all six notebook outputs
+     - Execute all six notebooks and save their outputs
    * - ``python scripts/check_docs.py docs/build/html``
      - Check saved tutorial outputs, generated pages, downloads, images, and local links
    * - ``.github/workflows/pages.yml``
@@ -187,7 +186,7 @@ Repository commands and examples
    * - ``sphinx-build -W --keep-going -b html docs/source docs/build/html``
      - Build guides, rendered notebooks, inventory, and API reference without notebook execution
    * - ``python -m http.server 8000 --directory site``
-     - Serve the unchanged historical browser gallery
+     - Serve the interactive gallery locally
 
 Installation extras
 -----------------------
@@ -197,12 +196,3 @@ Installation extras
 support, and plotting; ``viz`` installs matplotlib; ``gpu`` selects CUDA 13 JAX.
 ``all`` includes these tools and CUDA support. For a CPU setup use
 ``.[dev,docs,tutorials]`` rather than ``all``.
-
-Not yet implemented
------------------------
-
-Neural models, replay/DQN, actor-critic/PPO, model-based planning, recurrent
-policies, changing agent populations, heterogeneous action spaces, a new browser
-runtime/export format, and the reusable animal asset library remain planned.
-The Model protocol does not make a neural network compatible with the existing
-table-index updates. The current gallery runs its existing frozen artifact.

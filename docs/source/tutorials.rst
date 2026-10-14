@@ -1,11 +1,9 @@
 API tutorials
 =================
 
-Six independent notebooks teach the public API in order. Each contains executable
-code, step explanations as code comments, and saved outputs from local CPU
-execution. Documentation builds render the saved outputs and never run training.
-The organization follows NeuralJAXwork's separation of guides, API tutorials,
-and reference documentation; MARLAX retains its regular Sphinx theme.
+Six notebooks introduce environment configuration, agents, learning methods,
+training, storage, and custom environments. Each includes executable examples
+and saved outputs. Follow them in order or choose a topic below.
 
 .. toctree::
    :maxdepth: 1
@@ -35,10 +33,10 @@ What each tutorial teaches
      - Parameter shapes and action probabilities
    * - Learning methods
      - Compute each TD target and select a method in the training API
-     - Hand-computable updates and tiny training runs
+     - Worked TD updates and training runs
    * - Training and evaluation
-     - Control JIT chunks, load the historical table, evaluate, and roll out
-     - All 3,750 historical scenarios and a trajectory plot
+     - Control JIT chunks, load the pretrained table, evaluate, and roll out
+     - All 3,750 grid scenarios and a trajectory plot
    * - Checkpoints
      - Save an inference policy, restore full state, and continue SARSA
      - Equality with uninterrupted training
@@ -59,8 +57,7 @@ From the repository root, in the environment where you want to run the notebooks
 
 Choose the MARLAX kernel and run a notebook from top to bottom. The notebook
 working directory should be ``docs/source/notebooks``; the saved-policy tutorial
-uses that location to find the historical artifact. These are repository
-notebooks, rather than examples bundled into the installed wheel.
+uses that location to find the example policy in ``stores/``.
 
 Every notebook selects CPU before importing JAX. To use a GPU, edit that first
 cell before starting a fresh kernel and launch Jupyter with the desired
@@ -68,12 +65,12 @@ cell before starting a fresh kernel and launch Jupyter with the desired
 Restart the kernel before changing the backend; changing an environment variable
 after JAX initializes will not move existing arrays.
 
-The method tutorial's 8,192-transition runs demonstrate API wiring, not successful
-learning or a fair comparison. The saved-policy tutorial demonstrates actual
-trained behavior. Use the documented demo experiment for a new trained policy.
+The learning-method tutorial uses 8,192-transition runs to demonstrate method
+selection. For full training, use the ``demo`` profile in :doc:`experiments`.
+The training-and-evaluation tutorial evaluates the included pretrained policy.
 Checkpoint examples use temporary directories and clean them up at the end.
 
-To refresh all saved outputs deliberately:
+To execute all notebooks and refresh their saved outputs:
 
 .. code-block:: bash
 
@@ -81,7 +78,7 @@ To refresh all saved outputs deliberately:
    JAX_PLATFORMS=cpu sphinx-build -W --keep-going -b html docs/source docs/build/html
 
 The execution script starts a fresh kernel using its own Python interpreter for
-each notebook. It runs only when invoked; Sphinx has execution disabled.
+each notebook.
 
 Downloads
 -------------
@@ -94,4 +91,4 @@ Downloads
 * :download:`Custom environment <notebooks/06_custom_environment.ipynb>`
 
 Keep downloaded notebooks in the same repository-relative directory when running
-the historical-artifact tutorial, or explicitly edit its ``root`` path.
+the saved-policy tutorial, or explicitly edit its ``root`` path.

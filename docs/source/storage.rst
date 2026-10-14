@@ -1,8 +1,7 @@
 Saving and restoring
 ====================
 
-Use compressed NPZ for numeric arrays and JSON for configuration. The current
-small tables do not need Zarr, pickle, a database, or a checkpoint service.
+MARLAX stores numeric arrays in compressed NPZ files and configuration in JSON.
 ``numpy.load`` uses ``allow_pickle=False``. Model loading never executes serialized
 Python objects.
 
@@ -18,7 +17,7 @@ A policy directory contains ``variables.npz`` (named ``q`` array) and a
 ``manifest.json`` describing the format version, environment specification,
 sharing, model initialization, dtype, shape, and greedy tie rule. It contains no
 optimizer, exploration schedule, or rollout state. Version 1 supports QTable
-policies only. It is a Python inference format, not the planned browser bundle.
+policies.
 
 Full training checkpoint
 ------------------------
@@ -36,9 +35,7 @@ Full training checkpoint
 A checkpoint has ``state.npz`` containing ordered numerical PyTree leaves and a
 small format manifest. The template must be constructed with the same environment,
 model, method, world count, and package version. Static agent descriptions come
-from the template; there is no automatic schema migration or compatibility
-loader. Keep the run's resolved config alongside the checkpoint. Different
-architectures are new runs, not resumptions.
+from the template. Keep the run's resolved configuration alongside the checkpoint.
 
 The runner uses serializable uint32 JAX PRNG keys and stores pending SARSA actions
 as well as counters and environments. This supports continuation without resetting
@@ -67,14 +64,13 @@ The recipe snapshots tracked and untracked source/configuration documents before
 training into ``source.tar.gz``, and records the source revision and dirty status
 in provenance. This preserves the actual code even when working on uncommitted
 changes. Evaluation includes a SHA-256 fingerprint of the policy array. Run
-outputs are ignored by Git. Selected evaluation summaries can be documented
-separately; training never overwrites the historical checkpoint.
+outputs are ignored by Git.
 
-Original saved Q-table
-----------------------
+Load the example policy
+-----------------------
 
-The original NPZ can be supplied explicitly to the new policy constructor because
-its observation/action ordering is unchanged:
+The repository includes a trained cooperative-grid Q-table. Load its arrays
+into a ``FrozenPolicy`` for evaluation:
 
 .. code-block:: python
 
@@ -87,6 +83,5 @@ its observation/action ordering is unchanged:
                 allow_pickle=False) as saved:
        policy = mx.FrozenPolicy(mx.Agent(QTable()), jnp.asarray(saved["q"]))
 
-This is inference from known arrays, not restoration of the old training run.
-The original file has no runner RNG or pending actions. New training also changes
-duplicate-update and truncation semantics. The historical file remains untouched.
+This file contains inference parameters. To resume training, use a full
+checkpoint containing runner state and random keys.

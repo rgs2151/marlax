@@ -15,10 +15,9 @@ MARLAX is a JAX library for cooperative multi-agent reinforcement learning.
 Compose an environment, a model, an agent, and a learning method; train across
 batched worlds; then save a frozen policy for forward simulation.
 
-Version **0.1.0 (alpha)**. The current package provides tabular methods and a small
-cooperative grid. The documentation includes six executed tutorials, usage guides,
-and an API reference. GitHub Actions renders saved notebook outputs without
-training or executing notebooks.
+Version **0.1.0 (alpha)**. Train tabular policies with Q-learning, SARSA, or
+Expected SARSA. Start with the cooperative grid or define a custom environment
+using the environment protocol.
 
 ## Install
 
@@ -72,12 +71,11 @@ state and model variables are explicit; batching and resets belong to the runner
 | Learning | Q-learning, SARSA, Expected SARSA with averaged batched TD updates |
 | Execution | JAX `vmap`/`scan` training, greedy frozen policies, common training/evaluation dynamics |
 | Storage | Compressed NPZ arrays, JSON manifests, full checkpoints including RNG and pending actions |
-| Experiments | Training, evaluation, resume, historical-policy evaluation, and SVG diagnostics |
+| Experiments | Training, evaluation, resume, pretrained-policy evaluation, and SVG diagnostics |
 | Documentation | User guide, six executed notebooks, tool inventory, and generated API reference |
 
 See the [full inventory](https://rgs2151.github.io/marlax/inventory.html) for
-individual functions and supported combinations. Neural models, model-based
-planning, recurrent policies, and the new JavaScript runtime remain planned.
+individual functions and supported combinations.
 
 ## Tutorials
 
@@ -91,8 +89,7 @@ planning, recurrent policies, and the new JavaScript runtime remain planned.
 | [Custom environments](https://rgs2151.github.io/marlax/notebooks/06_custom_environment.html) | Build a cooperative game and reuse the existing learning stack |
 
 The published pages include saved outputs and notebook downloads. Source notebooks
-live in [docs/source/notebooks](docs/source/notebooks). Explanations use code
-comments; the examples run on CPU. Documentation builds do not rerun them.
+live in [docs/source/notebooks](docs/source/notebooks) and run on CPU.
 
 ## Experiment recipe
 
@@ -105,15 +102,14 @@ python experiments/coop_grid_td/run.py evaluate-saved
 ```
 
 Runs save configuration, source snapshots, metrics, checkpoints, inference policies,
-and evaluation under fresh `runs/` directories. They do not overwrite the
-historical model or gallery. See [the recipe](experiments/coop_grid_td/README.md)
+and evaluation under fresh `runs/` directories. See
+[the recipe](experiments/coop_grid_td/README.md)
 and [storage guide](https://rgs2151.github.io/marlax/storage.html).
 
-Local single-seed checks reached **100% collection across 3,750 start/target cases**
-for all three methods after 12.288 million world transitions. The original saved
-policy also retains its results through the new API. These are migration checks,
-not a multi-seed benchmark or a measured GPU/CPU comparison. Details are in
-[validation](https://rgs2151.github.io/marlax/validation.html).
+Example runs reached **100% collection across 3,750 start/target cases** for all
+three methods after 12.288 million world transitions using seed 0. See
+[evaluation results](https://rgs2151.github.io/marlax/validation.html) for the
+configuration and measurements.
 
 ## CI and publishing
 
@@ -123,13 +119,11 @@ notebook outputs, downloads, figures, and local documentation links. Pull reques
 produce a downloadable `marlax-site` artifact. Successful builds on `main` publish
 one GitHub Pages site:
 
-- `/marlax/gallery/` — existing interactive gallery.
+- `/marlax/gallery/` — interactive gallery.
 - `/marlax/` — documentation, tutorials, inventory, and API reference.
 
-Select **GitHub Actions** as the repository's Pages source in GitHub settings.
-The workflow also supports manual dispatch; only `main` deploys. Deployment uses
-the repository's `github-pages` environment. These URLs are populated after the
-updated workflow is pushed to `main` and completes successfully.
+Package checks and documentation builds run in parallel. Deployment requires
+both jobs to pass. The workflow also supports manual dispatch.
 
 For local verification:
 
@@ -139,5 +133,4 @@ JAX_PLATFORMS=cpu python -m sphinx -W --keep-going -b html docs/source docs/buil
 python scripts/check_docs.py docs/build/html
 ```
 
-Use [STYLE.md](STYLE.md) for diagnostic plots and [design/README.md](design/README.md)
-for the longer-term architecture.
+Use [STYLE.md](STYLE.md) when contributing diagnostic plots.

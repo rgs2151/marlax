@@ -1,8 +1,8 @@
 User guide
 ==========
 
-Start with installation and a small run, then learn the state and learning
-conventions. These guides describe the implemented Python package.
+Install MARLAX, train a policy, and learn how to configure environments,
+evaluate results, and save or resume training.
 
 .. toctree::
    :maxdepth: 1

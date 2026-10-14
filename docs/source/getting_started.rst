@@ -21,8 +21,8 @@ all package functions and small tests can run on CPU.
 
 The visible device is renumbered inside the process: physical GPU 1 appears as
 JAX device 0. The library does not set device visibility or allocator settings.
-Set them before starting Python. ``environment.yml`` remains a convenient conda
-Python environment; installing the package is a separate step.
+Set them before starting Python. To use conda, create an environment from
+``environment.yml``, then install the package with pip.
 
 A small run
 -----------
@@ -47,9 +47,9 @@ A small run
        initial_states=env.all_starts(), max_steps=params.time_limit,
    )
 
-This is a smoke-scale learning budget, not a promise of a good policy. The
-experiment recipe provides a longer ``demo`` profile and saves configuration,
-training state, inference variables, and evaluation results.
+This example uses 64,000 world transitions. For a longer training run, use the
+``demo`` profile in :doc:`experiments`, which also saves configuration,
+checkpoints, policies, and evaluation results.
 
 Documentation and checks
 ------------------------
@@ -61,7 +61,6 @@ Documentation and checks
    python -m http.server 8001 --directory docs/build/html
 
 Documentation uses reStructuredText, Sphinx autodoc, and the PyData Sphinx
-theme with light mode as the default. GitHub Actions builds it with saved notebook outputs, checks local links,
-and publishes successful main-branch builds at ``/marlax/``. The existing
-gallery is available at ``/marlax/gallery/`` in the same Pages deployment. Pull requests build
-and validate the site but do not deploy it.
+theme with light mode as the default. Notebook outputs are saved in the
+repository and rendered without executing training. GitHub Actions validates
+pull requests and publishes successful builds from ``main``.
