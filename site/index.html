@@ -11,9 +11,15 @@
   <body class="simulation">
     <header class="site-header"><a class="wordmark" href="../">MARLAX</a><nav aria-label="Main navigation"><a href="../">Documentation</a><a href="./" aria-current="page">Simulation</a><a href="./assets/">Assets</a></nav></header>
     <main id="gallery">
-      <section id="world" aria-label="Interactive cooperative gridworld">
-        <canvas id="world-canvas"></canvas>
+      <section class="controls" aria-label="Simulation controls">
+        <div><h1>Cooperative grid</h1><p id="task">Meet in the centre, then reach the same red target together.</p></div>
+        <div class="actions"><label hidden>Environment <select id="demo"></select></label><button id="play" type="button" disabled>Pause</button><button id="reset" type="button" disabled>Reset</button></div>
       </section>
+      <section id="world" aria-label="Simulation board" data-ui>
+        <canvas id="world-canvas" tabindex="0" aria-describedby="interaction-help"></canvas>
+        <noscript><img src="./assets/previews/approved-scene.svg" alt="Two mice on the cooperative circuit board"><p>Enable JavaScript to move the agents.</p></noscript>
+      </section>
+      <footer class="instructions"><p id="interaction-help">Drag an agent to move it. Keyboard: Enter selects; arrows move; Escape clears.</p><p id="status" role="status" aria-live="polite"></p></footer>
     </main>
     <script type="module" src="./js/gallery.js"></script>
   </body>

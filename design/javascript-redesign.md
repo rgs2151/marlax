@@ -7,6 +7,10 @@ and takes precedence over the broader [Browser handoff](browser-handoff.md)
 proposal for this gallery. Python package APIs, public documentation and approved
 artwork are unchanged.
 
+Implementation: the grid runtime and recorded SVG export now follow these
+boundaries. See [JavaScript runtime](javascript-runtime.md) for the implemented
+interfaces and commands. Docking and orbit remain separate environment work.
+
 ## Conclusion
 
 Keep the static delivery stack. Replace the simulation core rather than splitting

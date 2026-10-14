@@ -28,6 +28,9 @@ The current two-to-three-demo scope and JavaScript audit are in
 [JavaScript redesign audit](javascript-redesign.md) defines the runtime boundaries,
 interaction ordering and environment-specific requirements for implementation.
 
+The implemented gallery modules and SVG export commands are described in
+[JavaScript runtime](javascript-runtime.md).
+
 ## Read in this order
 
 | Document | Decision it supports |

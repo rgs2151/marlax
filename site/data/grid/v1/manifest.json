@@ -1,0 +1,267 @@
+{
+  "format": "marlax.browser",
+  "version": 1,
+  "id": "grid",
+  "revision": "v1",
+  "environment": {
+    "id": "coop_grid",
+    "version": 1,
+    "config": {
+      "size": 5,
+      "center": [
+        2,
+        2
+      ],
+      "zones": [
+        [
+          2,
+          4
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          0,
+          2
+        ]
+      ],
+      "targets": [
+        [
+          [
+            2,
+            4
+          ],
+          [
+            4,
+            2
+          ]
+        ],
+        [
+          [
+            4,
+            2
+          ],
+          [
+            2,
+            0
+          ]
+        ],
+        [
+          [
+            2,
+            0
+          ],
+          [
+            0,
+            2
+          ]
+        ],
+        [
+          [
+            2,
+            4
+          ],
+          [
+            0,
+            2
+          ]
+        ],
+        [
+          [
+            2,
+            4
+          ],
+          [
+            2,
+            0
+          ]
+        ],
+        [
+          [
+            4,
+            2
+          ],
+          [
+            0,
+            2
+          ]
+        ]
+      ],
+      "moves": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          -1
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          -1,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "timeLimit": 48,
+      "rewards": {
+        "step": -0.01,
+        "activation": 0.2,
+        "target": 1.0,
+        "wrong": -1.0,
+        "split": -0.4
+      }
+    },
+    "coordinates": "x_right_y_up",
+    "observationSchema": "coop_grid_joint_index_v1",
+    "actions": [
+      "stay",
+      "south",
+      "north",
+      "west",
+      "east"
+    ],
+    "stayAction": 0
+  },
+  "policy": {
+    "file": "actions.u8",
+    "dtype": "uint8",
+    "shape": [
+      2,
+      4375
+    ],
+    "order": "C",
+    "tieBreak": "lowest_action_index"
+  },
+  "scenarios": [
+    {
+      "id": "target-0",
+      "state": {
+        "positions": [
+          [
+            1,
+            0
+          ],
+          [
+            3,
+            4
+          ]
+        ],
+        "target": 0,
+        "active": false,
+        "steps": 0
+      }
+    },
+    {
+      "id": "target-1",
+      "state": {
+        "positions": [
+          [
+            0,
+            1
+          ],
+          [
+            4,
+            3
+          ]
+        ],
+        "target": 1,
+        "active": false,
+        "steps": 0
+      }
+    },
+    {
+      "id": "target-2",
+      "state": {
+        "positions": [
+          [
+            4,
+            4
+          ],
+          [
+            0,
+            0
+          ]
+        ],
+        "target": 2,
+        "active": false,
+        "steps": 0
+      }
+    },
+    {
+      "id": "target-3",
+      "state": {
+        "positions": [
+          [
+            3,
+            0
+          ],
+          [
+            1,
+            4
+          ]
+        ],
+        "target": 3,
+        "active": false,
+        "steps": 0
+      }
+    },
+    {
+      "id": "target-4",
+      "state": {
+        "positions": [
+          [
+            0,
+            4
+          ],
+          [
+            4,
+            0
+          ]
+        ],
+        "target": 4,
+        "active": false,
+        "steps": 0
+      }
+    },
+    {
+      "id": "target-5",
+      "state": {
+        "positions": [
+          [
+            0,
+            2
+          ],
+          [
+            4,
+            2
+          ]
+        ],
+        "target": 5,
+        "active": false,
+        "steps": 0
+      }
+    }
+  ],
+  "tickSeconds": 0.18,
+  "art": {
+    "board": "circuit",
+    "meeting": "portal",
+    "target": "beacon",
+    "agents": [
+      "orbit",
+      "dart"
+    ]
+  }
+}

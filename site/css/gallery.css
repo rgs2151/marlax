@@ -1,35 +1,26 @@
-html,
-body {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  overflow: hidden;
-  background: #fff;
-  color: #000;
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-}
-
-#gallery,
-#world {
-  width: 100%;
-  height: 100%;
-}
-
-#world {
-  position: fixed;
-  inset: 72px 0 0;
-  height: calc(100% - 72px);
-  touch-action: none;
-  user-select: none;
-}
-
-canvas {
-  display: block;
-  width: 100%;
-  height: 100%;
-  touch-action: none;
-}
-
-@media (max-width: 520px) {
-  #world { inset: 112px 0 0; height: calc(100% - 112px); }
+:root { --paper: #ffffff; --ink: #000000; --accent: #8b0000; }
+html, body { margin: 0; background: var(--paper); color: var(--ink); font-family: Arial, Helvetica, sans-serif; }
+body.simulation { min-height: 100dvh; display: flex; flex-direction: column; }
+#gallery { flex: 1; display: grid; grid-template-rows: auto minmax(320px, 1fr) auto; }
+.controls { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 12px 32px; }
+h1 { font-size: 24px; letter-spacing: -.025em; margin: 0 0 8px; }
+p { max-width: 75ch; margin: 0; font-size: 16px; line-height: 1.5; }
+.actions { display: flex; align-items: center; gap: 12px; }
+button, select { font: inherit; color: var(--ink); background: var(--paper); border: 2px solid var(--ink); padding: 10px 16px; cursor: pointer; }
+#play { background: var(--ink); color: var(--paper); min-width: 90px; }
+button:hover, #play:hover { background: var(--accent); border-color: var(--accent); color: var(--paper); }
+button:disabled { opacity: .5; cursor: wait; }
+#world { position: relative; min-height: 320px; height: calc(100dvh - 260px); }
+canvas { display: block; width: 100%; height: 100%; touch-action: none; user-select: none; }
+canvas:focus-visible { outline: 2px solid var(--accent); outline-offset: -4px; }
+.instructions { padding: 8px 32px 16px; }
+#status { min-height: 24px; color: var(--accent); }
+noscript { position: absolute; inset: 0; background: var(--paper); text-align: center; }
+noscript img { height: 85%; max-width: 100%; }
+[hidden] { display: none !important; }
+@media (max-width: 700px) {
+  .controls { align-items: flex-start; flex-direction: column; gap: 12px; padding: 12px 20px; }
+  .instructions { padding: 8px 20px 16px; }
+  #world { height: max(320px, calc(100dvh - 360px)); }
+  h1 { font-size: 22px; }
 }

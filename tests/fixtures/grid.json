@@ -1,0 +1,380 @@
+[
+  {
+    "name": "clip",
+    "state": {
+      "positions": [
+        [
+          0,
+          0
+        ],
+        [
+          4,
+          4
+        ]
+      ],
+      "target": 0,
+      "active": false,
+      "steps": 0
+    },
+    "actions": [
+      3,
+      4
+    ],
+    "observations": [
+      600,
+      600
+    ],
+    "result": {
+      "state": {
+        "positions": [
+          [
+            0,
+            0
+          ],
+          [
+            4,
+            4
+          ]
+        ],
+        "target": 0,
+        "active": false,
+        "steps": 1
+      },
+      "reward": [
+        -0.009999999776482582,
+        -0.009999999776482582
+      ],
+      "terminated": false,
+      "truncated": false,
+      "events": {
+        "activated": false,
+        "collected": false,
+        "wrongTarget": false
+      }
+    }
+  },
+  {
+    "name": "activate",
+    "state": {
+      "positions": [
+        [
+          2,
+          2
+        ],
+        [
+          2,
+          1
+        ]
+      ],
+      "target": 0,
+      "active": false,
+      "steps": 0
+    },
+    "actions": [
+      0,
+      2
+    ],
+    "observations": [
+      187,
+      187
+    ],
+    "result": {
+      "state": {
+        "positions": [
+          [
+            2,
+            2
+          ],
+          [
+            2,
+            2
+          ]
+        ],
+        "target": 0,
+        "active": true,
+        "steps": 1
+      },
+      "reward": [
+        0.1899999976158142,
+        0.1899999976158142
+      ],
+      "terminated": false,
+      "truncated": false,
+      "events": {
+        "activated": true,
+        "collected": false,
+        "wrongTarget": false
+      }
+    }
+  },
+  {
+    "name": "collect",
+    "state": {
+      "positions": [
+        [
+          2,
+          3
+        ],
+        [
+          2,
+          4
+        ]
+      ],
+      "target": 0,
+      "active": true,
+      "steps": 4
+    },
+    "actions": [
+      2,
+      0
+    ],
+    "observations": [
+      1192,
+      1192
+    ],
+    "result": {
+      "state": {
+        "positions": [
+          [
+            2,
+            4
+          ],
+          [
+            2,
+            4
+          ]
+        ],
+        "target": 0,
+        "active": true,
+        "steps": 5
+      },
+      "reward": [
+        0.9900000095367432,
+        0.9900000095367432
+      ],
+      "terminated": true,
+      "truncated": false,
+      "events": {
+        "activated": false,
+        "collected": true,
+        "wrongTarget": false
+      }
+    }
+  },
+  {
+    "name": "split",
+    "state": {
+      "positions": [
+        [
+          2,
+          4
+        ],
+        [
+          4,
+          2
+        ]
+      ],
+      "target": 0,
+      "active": true,
+      "steps": 0
+    },
+    "actions": [
+      0,
+      0
+    ],
+    "observations": [
+      997,
+      997
+    ],
+    "result": {
+      "state": {
+        "positions": [
+          [
+            2,
+            4
+          ],
+          [
+            4,
+            2
+          ]
+        ],
+        "target": 0,
+        "active": true,
+        "steps": 1
+      },
+      "reward": [
+        -0.4099999964237213,
+        -0.4099999964237213
+      ],
+      "terminated": false,
+      "truncated": false,
+      "events": {
+        "activated": false,
+        "collected": false,
+        "wrongTarget": false
+      }
+    }
+  },
+  {
+    "name": "wrong",
+    "state": {
+      "positions": [
+        [
+          2,
+          1
+        ],
+        [
+          4,
+          2
+        ]
+      ],
+      "target": 0,
+      "active": true,
+      "steps": 0
+    },
+    "actions": [
+      1,
+      0
+    ],
+    "observations": [
+      982,
+      982
+    ],
+    "result": {
+      "state": {
+        "positions": [
+          [
+            2,
+            0
+          ],
+          [
+            4,
+            2
+          ]
+        ],
+        "target": 0,
+        "active": true,
+        "steps": 1
+      },
+      "reward": [
+        -1.0099999904632568,
+        -1.0099999904632568
+      ],
+      "terminated": true,
+      "truncated": false,
+      "events": {
+        "activated": false,
+        "collected": false,
+        "wrongTarget": true
+      }
+    }
+  },
+  {
+    "name": "timeout",
+    "state": {
+      "positions": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "target": 0,
+      "active": false,
+      "steps": 47
+    },
+    "actions": [
+      0,
+      0
+    ],
+    "observations": [
+      150,
+      150
+    ],
+    "result": {
+      "state": {
+        "positions": [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            1
+          ]
+        ],
+        "target": 0,
+        "active": false,
+        "steps": 48
+      },
+      "reward": [
+        -0.009999999776482582,
+        -0.009999999776482582
+      ],
+      "terminated": false,
+      "truncated": true,
+      "events": {
+        "activated": false,
+        "collected": false,
+        "wrongTarget": false
+      }
+    }
+  },
+  {
+    "name": "collect-at-limit",
+    "state": {
+      "positions": [
+        [
+          2,
+          4
+        ],
+        [
+          2,
+          4
+        ]
+      ],
+      "target": 0,
+      "active": true,
+      "steps": 47
+    },
+    "actions": [
+      0,
+      0
+    ],
+    "observations": [
+      1197,
+      1197
+    ],
+    "result": {
+      "state": {
+        "positions": [
+          [
+            2,
+            4
+          ],
+          [
+            2,
+            4
+          ]
+        ],
+        "target": 0,
+        "active": true,
+        "steps": 48
+      },
+      "reward": [
+        0.9900000095367432,
+        0.9900000095367432
+      ],
+      "terminated": true,
+      "truncated": true,
+      "events": {
+        "activated": false,
+        "collected": true,
+        "wrongTarget": false
+      }
+    }
+  }
+]
