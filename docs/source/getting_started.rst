@@ -62,6 +62,6 @@ Documentation and checks
 
 Documentation uses reStructuredText, Sphinx autodoc, and the standard Alabaster
 theme. GitHub Actions builds it with saved notebook outputs, checks local links,
-and publishes successful main-branch builds at ``/marlax/docs/``. The existing
-gallery remains at ``/marlax/`` in the same Pages deployment. Pull requests build
+and publishes successful main-branch builds at ``/marlax/``. The existing
+gallery is available at ``/marlax/gallery/`` in the same Pages deployment. Pull requests build
 and validate the site but do not deploy it.

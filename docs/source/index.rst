@@ -8,7 +8,8 @@ worlds, and save a frozen policy independently of training state.
 The current release supports tabular Q-learning, SARSA, and Expected SARSA,
 independent or shared Q-tables, and the cooperative grid environment. Neural
 models, model-based planning, and the new JavaScript export format remain planned.
-The existing browser gallery and its saved artifacts are unchanged.
+Explore the `interactive gallery <https://rgs2151.github.io/marlax/gallery/>`_
+with the original saved policy.
 
 .. toctree::
    :maxdepth: 2

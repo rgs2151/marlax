@@ -62,10 +62,11 @@ jobs:
         run: python scripts/check_docs.py docs/build/html
       - name: Assemble gallery and documentation
         run: |
-          mkdir -p build/pages
-          cp -a site/. build/pages/
-          cp -a docs/build/html build/pages/docs
+          mkdir -p build/pages/gallery
+          cp -a docs/build/html/. build/pages/
+          cp -a site/. build/pages/gallery/
           touch build/pages/.nojekyll
+          python scripts/check_docs.py build/pages
       - name: Upload reviewable site
         uses: actions/upload-artifact@v4
         with:
