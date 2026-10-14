@@ -3,11 +3,13 @@ author = "MARLAX contributors"
 release = "0.1.0"
 extensions = ["sphinx.ext.autodoc", "sphinx.ext.viewcode", "myst_nb"]
 html_theme = "pydata_sphinx_theme"
+templates_path = ["_templates"]
 html_title = "MARLAX"
 html_context = {"default_mode": "light"}
 html_theme_options = {
     "github_url": "https://github.com/rgs2151/marlax",
     "logo": {"text": "MARLAX"},
+    "navbar_persistent": ["gallery-link"],
     "navbar_end": ["theme-switcher", "navbar-icon-links"],
     "search_bar_text": "Search documentation",
     "search_as_you_type": True,

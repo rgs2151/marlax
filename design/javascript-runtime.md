@@ -1,8 +1,12 @@
 # JavaScript runtime
 
 The gallery uses native ES modules and Canvas 2D. Its first demo is the existing
-cooperative grid, running the saved frozen policy with Python-equivalent world
-transitions. Artwork follows [the approved visual standard](aesthetics.md).
+cooperative grid, running the saved policy with Python-equivalent world
+transitions. Live playback samples independent starting cells and a target pair
+at each reset. Each agent chooses a uniformly random action with probability 0.18
+and otherwise follows the frozen greedy policy. Playback uses 650 ms per move
+and a 1.5-second terminal hold. These live settings are in `site/js/demos.js`;
+recorded exports retain explicit starts and deterministic greedy execution. Artwork follows [the approved visual standard](aesthetics.md).
 This guide describes the implemented interfaces; [the audit](javascript-redesign.md)
 records the rationale. Docking and orbit are not implemented yet.
 
@@ -26,7 +30,8 @@ copies the static site; its deployment workflow does not run tests.
 ## Add a demo
 
 1. Implement a DOM-free environment in `site/js/environments/`:
-   `reset(scenario)`, `observe(state)` and `step(state, actions)`.
+   `reset(scenario)`, `sampleScenario(random)`, `observe(state)` and
+   `step(state, actions)`. The sampler supplies a fresh live starting scenario.
    Return fresh state; observations are one finite index per agent. Step results
    contain `{state, reward, terminated, truncated, events}`. Reward is per agent.
    All actions in this export profile are legal; blocked movement is a transition
@@ -38,7 +43,8 @@ copies the static site; its deployment workflow does not run tests.
 3. Export a versioned directory under `site/data/` containing `manifest.json` and
    `actions.u8`. Use explicit starts and the complete environment configuration.
 4. Add one definition to `site/js/demos.js`, with ID, name, task description,
-   manifest URL and the environment/view factories. The selector appears when
+   manifest URL, environment/view factories, and `playback` settings
+   (`tickSeconds`, `terminalSeconds`, `epsilon`). The selector appears when
    more than one demo exists. Switching creates a fresh session; only one runs.
 
 The manifest's `art` object belongs to that demo's view. Asset IDs resolve through
@@ -78,11 +84,12 @@ interval and stay-action index. It owns state, episode timing and queued placeme
 
 A held piece receives the stay action while its partner keeps acting. Release
 commits the legal placement with one stay tick before policy control resumes.
-Grid placement snaps to cells and allows co-location. Pointer movement adds no
+Release snaps immediately to the legal cell, before the next tick, so the piece
+does not jump back while waiting for its action. Grid placement allows co-location. Pointer movement adds no
 velocity. A terminal world freezes immediately; a held gesture must end before
 advancing to the next scenario. Hidden pages suspend time without catch-up.
 
-Pause and Reset are HTML controls. On the canvas, Enter cycles agent selection,
+Pause and Reset are HTML controls. Live Reset samples a new starting state. On the canvas, Enter cycles agent selection,
 arrows place the selected agent, and Escape clears selection. Repeated clicking
 on overlapping pieces cycles them, starting with the topmost one. The initiating
 pointer owns the gesture through release or cancellation. Reduced-motion preference

@@ -29,8 +29,12 @@ async function activate(demo) {
   const bytes = new Uint8Array(await (await fetch(new URL(manifest.policy.file, demo.manifest))).arrayBuffer());
   const environment = demo.environment(manifest.environment.config);
   const view = demo.view(manifest.environment.config, manifest.art);
-  const simulation = createSimulation({environment, view, policy: createPolicy(bytes, manifest.policy.shape[1]),
-    scenarios: manifest.scenarios, tickSeconds: manifest.tickSeconds, stayAction: manifest.environment.stayAction});
+  const simulation = createSimulation({environment, view, policy: createPolicy(bytes, manifest.policy.shape[1], {
+      epsilon: demo.playback.epsilon, numActions: manifest.environment.actions.length,
+    }),
+    scenarios: manifest.scenarios, sampleScenario: () => environment.sampleScenario(),
+    tickSeconds: demo.playback.tickSeconds, terminalSeconds: demo.playback.terminalSeconds,
+    stayAction: manifest.environment.stayAction});
   const ids = new Set(simulation.scene().sprites.map(sprite => sprite.asset));
   await Promise.all(catalog.assets.filter(a => ids.has(a.id) && !assets.has(a.id)).map(async asset => {
     const image = new Image();

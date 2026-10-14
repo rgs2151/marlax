@@ -1,11 +1,11 @@
-export function createSimulation({environment, policy, view, scenarios, tickSeconds, stayAction, terminalSeconds = 0.6}) {
+export function createSimulation({environment, policy, view, scenarios, tickSeconds, stayAction, terminalSeconds = 0.6, sampleScenario = index => scenarios[index]}) {
   const session = {
     state: null, previous: null, result: null, headings: [],
     scenarioIndex: 0, accumulator: 0, terminalElapsed: 0,
     playing: true, suspended: false, held: null, pending: null, releasing: false,
     reset(index = this.scenarioIndex) {
       this.scenarioIndex = index;
-      this.state = environment.reset(scenarios[index]);
+      this.state = environment.reset(sampleScenario(index));
       this.previous = this.state;
       this.result = null;
       this.headings = [];
@@ -25,6 +25,11 @@ export function createSimulation({environment, policy, view, scenarios, tickSeco
     },
     release() {
       if (this.ended) { this.held = null; this.pending = null; return; }
+      if (this.pending) {
+        const {agent, point} = this.pending;
+        this.state = view.place(this.state, agent, point);
+        this.previous = view.place(this.previous, agent, point);
+      }
       this.releasing = this.held !== null;
     },
     cancel() {

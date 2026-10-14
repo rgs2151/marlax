@@ -107,3 +107,22 @@ test('recordings finish all curated starts and render without a policy', async (
   const roundTrip = projection.toWorld(projection.toScreen(point));
   point.forEach((v, i) => assert.ok(Math.abs(v - roundTrip[i]) < 1e-10));
 });
+
+
+test('live sampling is independent and exploration can choose a non-greedy action', () => {
+  const draws = [.02, .62, .42, .82, .99];
+  const scenario = environment.sampleScenario(() => draws.shift());
+  assert.deepEqual(scenario.state.positions, [[0, 3], [2, 4]]);
+  assert.equal(scenario.state.target, 5);
+  const samples = [.1, .9, .8];
+  const mixed = createPolicy(new Uint8Array([0, 0]), 1, {
+    epsilon: .18, numActions: 5, random: () => samples.shift(),
+  });
+  assert.deepEqual(mixed.act([0, 0]), [4, 0]);
+  const sim = session();
+  sim.hold(0);
+  sim.place(0, [3.1, .1]);
+  sim.release();
+  assert.deepEqual(sim.state.positions[0], [3, 0]);
+  assert.deepEqual(sim.scene().sprites.find(p => p.agent === 0).position, [3, 0]);
+});

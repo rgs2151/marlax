@@ -62,7 +62,7 @@ export function createRenderer(canvas, assets) {
     hits(point) {
       return this.scene.sprites.filter(p => p.agent !== undefined).reverse().filter(p => {
         const screen = this.projection.toScreen(p.position);
-        const radius = Math.max(22, p.width * this.projection.scale * 0.36);
+        const radius = Math.max(26, p.width * this.projection.scale * 0.48);
         return Math.hypot(screen[0] - point[0], screen[1] - point[1]) <= radius;
       });
     },

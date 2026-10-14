@@ -2,6 +2,12 @@ export function createGrid(config) {
   const {size, center, zones, targets, moves, rewards, timeLimit} = config;
   const equal = (a, b) => a[0] === b[0] && a[1] === b[1];
   return {
+    sampleScenario(random = Math.random) {
+      return {state: {
+        positions: Array.from({length: 2}, () => [Math.floor(random() * size), Math.floor(random() * size)]),
+        target: Math.floor(random() * targets.length), active: false, steps: 0,
+      }};
+    },
     reset: scenario => structuredClone(scenario.state),
     observe(state) {
       const cells = state.positions.map(([x, y]) => y * size + x);

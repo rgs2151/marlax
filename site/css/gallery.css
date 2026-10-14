@@ -11,7 +11,7 @@ button, select { font: inherit; color: var(--ink); background: var(--paper); bor
 button:hover, #play:hover { background: var(--accent); border-color: var(--accent); color: var(--paper); }
 button:disabled { opacity: .5; cursor: wait; }
 #world { position: relative; min-height: 320px; height: calc(100dvh - 260px); }
-canvas { display: block; width: 100%; height: 100%; touch-action: none; user-select: none; }
+canvas { cursor: grab; display: block; width: 100%; height: 100%; touch-action: none; user-select: none; }
 canvas:focus-visible { outline: 2px solid var(--accent); outline-offset: -4px; }
 .instructions { padding: 8px 32px 16px; }
 #status { min-height: 24px; color: var(--accent); }

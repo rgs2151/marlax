@@ -6,6 +6,7 @@ export function createInput(canvas, renderer, current, announce) {
       const pointer = this.pointerId;
       this.pointerId = null;
       this.preview = null;
+      canvas.style.cursor = '';
       current().simulation.cancel();
       if (pointer !== null && canvas.hasPointerCapture(pointer)) canvas.releasePointerCapture(pointer);
     },
@@ -33,6 +34,7 @@ export function createInput(canvas, renderer, current, announce) {
     const point = renderer.pointer(event);
     const candidates = renderer.hits(point);
     if (!candidates.length) return;
+    event.preventDefault();
     const key = candidates.map(p => p.agent).join(',');
     input.cycle = key === input.lastCandidates ? (input.cycle + 1) % candidates.length : 0;
     input.lastCandidates = key;
@@ -42,6 +44,7 @@ export function createInput(canvas, renderer, current, announce) {
     const world = renderer.projection.toWorld(point);
     input.offset = sprite.position.map((v, axis) => v - world[axis]);
     simulation.hold(input.selected);
+    canvas.style.cursor = 'grabbing';
     canvas.setPointerCapture(event.pointerId);
     canvas.focus({preventScroll: true});
     announce(`Agent ${input.selected + 1} selected.`);
@@ -56,6 +59,7 @@ export function createInput(canvas, renderer, current, announce) {
     current().simulation.release();
     input.pointerId = null;
     input.preview = null;
+    canvas.style.cursor = '';
     canvas.releasePointerCapture(event.pointerId);
   });
   for (const name of ['pointercancel', 'lostpointercapture']) {
